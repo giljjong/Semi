@@ -11,11 +11,8 @@
 	</settings>
 	
 	<typeAliases>
-<<<<<<< HEAD
-		<!-- <typeAlias type="com.gdu.app14.domain.AttachDTO" alias="AttachDTO" />
-		<typeAlias type="com.gdu.app14.domain.UploadDTO" alias="UploadDTO" /> -->
-=======
->>>>>>> main
+		<typeAlias type="com.gdu.app14.domain.AttachDTO" alias="AttachDTO" />
+		<typeAlias type="com.gdu.app14.domain.UploadDTO" alias="UploadDTO" />
 	</typeAliases>
 
 </configuration>

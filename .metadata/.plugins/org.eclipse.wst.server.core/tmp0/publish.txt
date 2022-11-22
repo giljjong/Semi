@@ -1,3 +1,7 @@
 #Tomcat publish data
+<<<<<<< HEAD
 #Tue Nov 22 17:35:10 KST 2022
+=======
+#Tue Nov 22 17:24:41 KST 2022
+>>>>>>> main
 org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\GDJ54\\.m2\\repository\\org\\springframework\\spring-web\\5.3.3\\spring-web-5.3.3.jar=WEB-INF/lib/spring-web-5.3.3.jar
