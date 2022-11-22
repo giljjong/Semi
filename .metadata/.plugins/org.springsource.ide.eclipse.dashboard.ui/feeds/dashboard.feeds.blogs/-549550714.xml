@@ -5,7 +5,42 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2022-11-21T18:58:00Z</updated>
+  <updated>2022-11-22T06:50:00Z</updated>
+  <entry>
+    <title>Spring Web Services 4.0.0 is now GA</title>
+    <link rel="alternate" href="https://spring.io/blog/2022/11/21/spring-web-services-4-0-0-is-now-ga" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Greg L. Turnquist</name>
+    </author>
+    <id>tag:spring.io,2022-11-21:5008</id>
+    <updated>2022-11-22T06:50:00Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;Greetings Spring community,&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The Spring Web Services team has released &lt;strong&gt;4.0.0&lt;/strong&gt; for general availability. This is the version of Spring WS you&amp;#8217;ll need if you are building SOAP-based applications with &lt;strong&gt;Spring Boot 3.0&lt;/strong&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;strong&gt;4.0.x&lt;/strong&gt; is the generation of Spring Web Services that works with Jakarta EE 9+, the version where the enterprise specs (JAX-WS, etc.) migrate from &lt;code&gt;javax.&lt;/code&gt; to &lt;code&gt;jakarta.&lt;/code&gt; package prefixes. Check out &lt;a href="https://spring.io/blog/2022/11/16/spring-framework-6-0-goes-ga"&gt;Juergen Holler&amp;#8217;s blog post&lt;/a&gt; for more details about Spring Framework 6.0.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Being based upon Spring Framework 6.0, this is also the generation of Spring Web Services that is rebased on top of Java 17 (LTS). So check it out!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;For more details, check out our official &lt;a href="https://github.com/spring-projects/spring-ws/releases/tag/v4.0.0"&gt;GitHub release&lt;/a&gt;. This includes links to all the related tickets as well as the source code.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;We have also adopted &lt;a href="https://github.com/spring-projects/spring-ws/releases"&gt;GitHub releases&lt;/a&gt; as our avenue for tracking changes in a given release. All current and prior releases of Spring WS are now captured in the list of releases on GitHub. Feel free to check them out.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The artifacts are hosted on Maven Central so grab 'em while they&amp;#8217;re hot!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://spring.io/projects/spring-ws/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-ws"&gt;Source Code&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-ws/issues"&gt;Issues&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Spring Security 5.8 and 6.0 are now GA</title>
     <link rel="alternate" href="https://spring.io/blog/2022/11/21/spring-security-5-8-and-6-0-are-now-ga" />
@@ -676,174 +711,6 @@ dependencies {&#xD;
     <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I am pleased to announce that Spring Framework &lt;code&gt;6.0.0-RC4&lt;/code&gt; is available now.&lt;/p&gt;
 &lt;p&gt;Spring Framework &lt;code&gt;6.0.0-RC4&lt;/code&gt; includes &lt;a href="https://github.com/spring-projects/spring-framework/releases/tag/v6.0.0-RC4"&gt;12 fixes and improvements&lt;/a&gt;. Stay tuned for the announcement of Spring Boot &lt;code&gt;3.0.0-RC2&lt;/code&gt; later this week!&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://projects.spring.io/spring-framework/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-framework"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-framework/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-framework/docs/6.0.0-RC4/reference/html/"&gt;Documentation&lt;/a&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Cloud 2021.0.5 (codename Jubilee) Has Been Released</title>
-    <link rel="alternate" href="https://spring.io/blog/2022/11/08/spring-cloud-2021-0-5-codename-jubilee-has-been-released" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Oleg Zhurakousky</name>
-    </author>
-    <id>tag:spring.io,2022-11-08:4985</id>
-    <updated>2022-11-08T22:45:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the community, I am pleased to announce that the General Availability (RELEASE) of the &lt;a href="https://cloud.spring.io"&gt;Spring Cloud 2021.0.5&lt;/a&gt; Release Train is available today. The release can be found in &lt;a href="https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2021.0.5/"&gt;Maven Central&lt;/a&gt;. You can check out the 2021.0.5 &lt;a href="https://github.com/spring-cloud/spring-cloud-release/wiki/Spring-Cloud-2021.0.5-Release-Notes"&gt;release notes for more information&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a href="#notable-changes-in-the-2021-0-5-release-train" class="anchor" name="notable-changes-in-the-2021-0-5-release-train"&gt;&lt;/a&gt;Notable Changes in the 2021.0.5 Release Train&lt;/h2&gt;
-&lt;p&gt;See the &lt;a href="https://github.com/orgs/spring-cloud/projects/82"&gt;project page&lt;/a&gt; for all the issues and pull requests included in this release.&lt;/p&gt;&lt;h3&gt;&lt;a href="#spring-cloud-function" class="anchor" name="spring-cloud-function"&gt;&lt;/a&gt;Spring Cloud Function&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Add support for Azure Timer Trigger in spring-cloud-function-azure&lt;/li&gt;
-  &lt;li&gt;Enhancement to AWS Function Invoker in spring-cloud-function-aws to programmatically inject function definition&lt;/li&gt;
-  &lt;li&gt;
-  &lt;p&gt;Add support for Azure Timer Trigger in spring-cloud-function-azure&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-config" class="anchor" name="spring-cloud-config"&gt;&lt;/a&gt;Spring Cloud Config&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Align Jdbc Repository&amp;rsquo;s behavior with Git Repository (&lt;a href="https://github.com/spring-cloud/spring-cloud-config/pull/2171"&gt;#2171&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-commons" class="anchor" name="spring-cloud-commons"&gt;&lt;/a&gt;Spring Cloud Commons&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Allow setting attributes in LoadBalancer &lt;code&gt;RequestData&lt;/code&gt; (&lt;a href="https://github.com/spring-cloud/spring-cloud-commons/pull/1142"&gt;#1142&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;&lt;h3&gt;&lt;a href="#spring-cloud-openfeign" class="anchor" name="spring-cloud-openfeign"&gt;&lt;/a&gt;Spring Cloud OpenFeign&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;Spring Security OAuth2 support has been added (&lt;a href="https://github.com/spring-cloud/spring-cloud-openfeign/issues/644"&gt;#644&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The following modules were updated as part of 2021.0.4:&lt;/p&gt;
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Module &lt;/th&gt;
-      &lt;th&gt;Version &lt;/th&gt;
-      &lt;th&gt;Issues&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Netflix &lt;/td&gt;
-      &lt;td&gt;3.1.4 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Config &lt;/td&gt;
-      &lt;td&gt;3.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Build &lt;/td&gt;
-      &lt;td&gt;3.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Sleuth &lt;/td&gt;
-      &lt;td&gt;3.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Gateway &lt;/td&gt;
-      &lt;td&gt;3.1.4 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Starter Build &lt;/td&gt;
-      &lt;td&gt;2021.0.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Consul &lt;/td&gt;
-      &lt;td&gt;3.1.2 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Contract &lt;/td&gt;
-      &lt;td&gt;3.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Kubernetes &lt;/td&gt;
-      &lt;td&gt;2.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Zookeeper &lt;/td&gt;
-      &lt;td&gt;3.1.3 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Task &lt;/td&gt;
-      &lt;td&gt;2.4.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Openfeign &lt;/td&gt;
-      &lt;td&gt;3.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Circuitbreaker &lt;/td&gt;
-      &lt;td&gt;2.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Stream &lt;/td&gt;
-      &lt;td&gt;3.2.6 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Commons &lt;/td&gt;
-      &lt;td&gt;3.1.5 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spring Cloud Function &lt;/td&gt;
-      &lt;td&gt;3.2.8 &lt;/td&gt;
-      &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;As always, we welcome feedback on &lt;a href="https://github.com/spring-cloud/"&gt;GitHub&lt;/a&gt;, on &lt;a href="https://gitter.im/spring-cloud/spring-cloud"&gt;Gitter&lt;/a&gt;, on &lt;a href="https://stackoverflow.com/questions/tagged/spring-cloud"&gt;Stack Overflow&lt;/a&gt;, and on &lt;a href="https://twitter.com/SpringCloud"&gt;Twitter&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;To get started with Maven with a BOM (dependency management only):&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint"&gt;&lt;br/&gt;&amp;lt;dependencyManagement&amp;gt;&#xD;
-    &amp;lt;dependencies&amp;gt;&#xD;
-        &amp;lt;dependency&amp;gt;&#xD;
-            &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-            &amp;lt;artifactId&amp;gt;spring-cloud-dependencies&amp;lt;/artifactId&amp;gt;&#xD;
-            &amp;lt;version&amp;gt;2021.0.5&amp;lt;/version&amp;gt;&#xD;
-            &amp;lt;type&amp;gt;pom&amp;lt;/type&amp;gt;&#xD;
-            &amp;lt;scope&amp;gt;import&amp;lt;/scope&amp;gt;&#xD;
-        &amp;lt;/dependency&amp;gt;&#xD;
-    &amp;lt;/dependencies&amp;gt;&#xD;
-&amp;lt;/dependencyManagement&amp;gt;&#xD;
-&amp;lt;dependencies&amp;gt;&#xD;
-    &amp;lt;dependency&amp;gt;&#xD;
-        &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-        &amp;lt;artifactId&amp;gt;spring-cloud-starter-config&amp;lt;/artifactId&amp;gt;&#xD;
-    &amp;lt;/dependency&amp;gt;&#xD;
-    &amp;lt;dependency&amp;gt;&#xD;
-        &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt;&#xD;
-        &amp;lt;artifactId&amp;gt;spring-cloud-starter-netflix-eureka-client&amp;lt;/artifactId&amp;gt;&#xD;
-    &amp;lt;/dependency&amp;gt;&#xD;
-    ...&#xD;
-&amp;lt;/dependencies&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;or with Gradle:&lt;/p&gt;
-&lt;pre&gt;&lt;code class="prettyprint"&gt;buildscript {&#xD;
-dependencies {&#xD;
-classpath &amp;quot;io.spring.gradle:dependency-management-plugin:1.0.2.RELEASE&amp;quot;&#xD;
-}&#xD;
-}&#xD;
-&#xD;
-&#xD;
-&#xD;
-apply plugin: &amp;quot;io.spring.dependency-management&amp;quot;&#xD;
-&#xD;
-dependencyManagement {&#xD;
-imports {&#xD;
-mavenBom &amp;#39;org.springframework.cloud:spring-cloud-dependencies:2021.0.5&amp;#39;&#xD;
-}&#xD;
-}&#xD;
-&#xD;
-dependencies {&#xD;
-compile &amp;#39;org.springframework.cloud:spring-cloud-starter-config&amp;#39;&#xD;
-compile &amp;#39;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&amp;#39;&#xD;
-...&#xD;
-}
-&lt;/code&gt;&lt;/pre&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
