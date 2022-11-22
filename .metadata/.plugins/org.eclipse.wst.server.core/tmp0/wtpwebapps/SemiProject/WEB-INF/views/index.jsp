@@ -10,6 +10,6 @@
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 </head>
 <body>
-
+ 	hello
 </body>
 </html>
