@@ -6,4 +6,4 @@
 
 <mapper namespace="com.gdu.semi.mapper.UserMapper">
 
-</mapper>
+</mapper> 
