@@ -18,9 +18,9 @@
 				FROM DUAL
 		</selectKey>
 		INSERT INTO UPLOAD
-			(UPLOAD_BOARD_NO, ID, IP, UPLOAD_TITLE, UPLOAD_CONTENT, CREATE_DATE, MODIFY_DATE, HIT )
+			(UPLOAD_BOARD_NO, ID, IP, UPLOAD_TITLE, CREATE_DATE, MODIFY_DATE, )
 		VALUES
-			(#{uploadNo), #{id}, #{ip}, #{uploadTitle}, #{uploadContent} SYSDATE, SYSDATE, 0)
+			(#{uploadNo), #{id}, #{ip}, #{uploadTitle}, SYSDATE, SYSDATE)
 		
 	</insert> 
 	
