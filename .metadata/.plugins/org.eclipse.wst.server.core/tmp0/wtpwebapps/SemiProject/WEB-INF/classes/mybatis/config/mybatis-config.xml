@@ -11,6 +11,7 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.gdu.semi.domain.AttachDTO" alias="AttachDTO" />
+		<typeAlias type="com.gdu.semi.domain.UploadBoardDTO" alias="UploadBoardDTO" />
 	</typeAliases>
-
 </configuration>
