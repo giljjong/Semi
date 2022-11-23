@@ -2,8 +2,12 @@ package com.gdu.semi.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.UploadBoardDTO;
 import com.gdu.semi.mapper.UploadBoardMapper;
@@ -23,5 +27,14 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	@Override
 	public List<UploadBoardDTO> getUpLoadList() {
 		return uploadBoardMapper.selectUploadList();
+	}
+	
+	@Transactional
+	@Override
+	public void save(MultipartHttpServletRequest multipartHttpServletRequest, HttpServletResponse response) {
+		
+		String title = multipartHttpServletRequest.getParameter("title");
+		String content = multipartHttpServletRequest.getParameter("content");
+		
 	}
 }
