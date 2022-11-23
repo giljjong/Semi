@@ -50,9 +50,12 @@
 1669184108127	Copy file
 1669184110745	Rename resource 'index.jsp'
 1669184729303	Move folder
+<<<<<<< HEAD
 1669188172670	Delete elements
 1669188177788	Delete elements
 1669188183205	Delete element
 1669188190355	Delete elements
 1669188197001	Delete elements
 1669188221518	Delete elements
+=======
+>>>>>>> 4252f6ec4ac5f167c0e6a682d947c53cb4f842f8
