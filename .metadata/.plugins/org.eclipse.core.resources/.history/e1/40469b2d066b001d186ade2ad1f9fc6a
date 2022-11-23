@@ -32,9 +32,7 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	@Transactional
 	@Override
 	public void save(MultipartHttpServletRequest multipartHttpServletRequest, HttpServletResponse response) {
-		
-		String title = multipartHttpServletRequest.getParameter("title");
-		String content = multipartHttpServletRequest.getParameter("content");
+		// TODO Auto-generated method stub
 		
 	}
 }

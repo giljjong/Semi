@@ -12,25 +12,17 @@
 		FROM UPLOAD_BOARD U
 	</select>
 	
-<<<<<<< HEAD
-<!-- 	<insert id="insertUpload" parameterType="UploadBoardDTO">
-		<selectKey keyProperty="uploadBoardNo" resultType="int" order="b>
-		
-		</selectKey>
-	</insert> -->
-=======
 	<insert id="insertUpload" parameterType="UploadBoardDTO">
 		<selectKey keyProperty="uploadBoardNo" resultType="int" order="BEFORE">
 			SELECT UPLOAD_SEQ.NEXTVAL
 				FROM DUAL
 		</selectKey>
 		INSERT INTO UPLOAD
-			(UPLOAD_BOARD_NO, ID, IP, UPLOAD_TITLE, UPLOAD_CONTENT, CREATE_DATE, MODIFY_DATE, HIT )
+			(UPLOAD_BOARD_NO, ID, IP, UPLOAD_TITLE, CREATE_DATE, MODIFY_DATE, )
 		VALUES
-			(#{uploadNo), #{id}, #{ip}, #{uploadTitle}, #{uploadContent} SYSDATE, SYSDATE, 0)
+			(#{uploadNo), #{id}, #{ip}, #{uploadTitle}, SYSDATE, SYSDATE)
 		
 	</insert> 
->>>>>>> 4252f6ec4ac5f167c0e6a682d947c53cb4f842f8
 	
 	<insert id="insertAttach" parameterType="AttachDTO">
 		INSERT INTO ATTACH

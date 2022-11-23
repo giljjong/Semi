@@ -12,4 +12,10 @@
     <fullyQualifiedTypeName name="java.util.Calendar"/>
     <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
     <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="com.gdu.semi.mapper.UploadBoardMapper"/>
+    <fullyQualifiedTypeName name="com.gdu.semi.domain.UploadBoardDTO"/>
+    <fullyQualifiedTypeName name="com.gdu.semi.domain.AttachDTO"/>
+    <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartHttpServletRequest"/>
+    <fullyQualifiedTypeName name="javax.servlet.http.HttpServletResponse"/>
+    <fullyQualifiedTypeName name="org.springframework.transaction.annotation.Transactional"/>
 </qualifiedTypeNameHistroy>
