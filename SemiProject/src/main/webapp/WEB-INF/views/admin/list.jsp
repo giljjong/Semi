@@ -10,6 +10,14 @@
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 </head>
 <body>
-	
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<td></td>
+				</tr>
+			</thead>
+		</table>
+	</div>
 </body>
 </html>

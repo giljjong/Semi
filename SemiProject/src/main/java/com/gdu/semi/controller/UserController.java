@@ -6,4 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class UserController {
 	
+	@GetMapping("/")
+	public String welcom() {
+		return "index";
+	}
+	
 }

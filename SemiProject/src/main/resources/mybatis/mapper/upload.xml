@@ -12,13 +12,6 @@
 		FROM UPLOAD_BOARD U
 	</select>
 	
-<<<<<<< HEAD
-<!-- 	<insert id="insertUpload" parameterType="UploadBoardDTO">
-		<selectKey keyProperty="uploadBoardNo" resultType="int" order="b>
-		
-		</selectKey>
-	</insert> -->
-=======
 	<insert id="insertUpload" parameterType="UploadBoardDTO">
 		<selectKey keyProperty="uploadBoardNo" resultType="int" order="BEFORE">
 			SELECT UPLOAD_SEQ.NEXTVAL
@@ -30,6 +23,5 @@
 			(#{uploadNo), #{id}, #{ip}, #{uploadTitle}, 
 		
 	</insert> 
->>>>>>> 4252f6ec4ac5f167c0e6a682d947c53cb4f842f8
 	
 </mapper>

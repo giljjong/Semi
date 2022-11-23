@@ -1,8 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy>
-<<<<<<< HEAD
-    <typeInfo handle="=SemiProject/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.gdu.semi.service{AdminService.java[AdminService" modifiers="513" timestamp="1669189635572"/>
-=======
-    <typeInfo handle="=SemiProject/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.gdu.semi.service{UserService.java[UserService" modifiers="513" timestamp="1669108212054"/>
->>>>>>> 4252f6ec4ac5f167c0e6a682d947c53cb4f842f8
-</typeInfoHistroy>
+<typeInfoHistroy/>
