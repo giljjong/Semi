@@ -1,24 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
-    <fullyQualifiedTypeName name="lombok.NoArgsConstructor"/>
-    <fullyQualifiedTypeName name="lombok.AllArgsConstructor"/>
-    <fullyQualifiedTypeName name="lombok.Data"/>
-    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
-    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Mapper"/>
-    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
-    <fullyQualifiedTypeName name="java.util.UUID"/>
-    <fullyQualifiedTypeName name="java.util.Calendar"/>
-    <fullyQualifiedTypeName name="java.util.regex.Matcher"/>
-    <fullyQualifiedTypeName name="java.io.File"/>
-<<<<<<< HEAD
-    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
-=======
-    <fullyQualifiedTypeName name="com.gdu.semi.mapper.UploadBoardMapper"/>
-    <fullyQualifiedTypeName name="com.gdu.semi.domain.UploadBoardDTO"/>
-    <fullyQualifiedTypeName name="com.gdu.semi.domain.AttachDTO"/>
-    <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartHttpServletRequest"/>
-    <fullyQualifiedTypeName name="javax.servlet.http.HttpServletResponse"/>
-    <fullyQualifiedTypeName name="org.springframework.transaction.annotation.Transactional"/>
->>>>>>> 87b942f3c84738d323741306e19f47e26905878e
-</qualifiedTypeNameHistroy>
+<qualifiedTypeNameHistroy/>

@@ -1,22 +1,9 @@
 INDEX VERSION 1.131
-<<<<<<< HEAD
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4031596256.index
-\SemiProject2\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3229873528.index
-\SemiProject2\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3674818547.index
-\SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3247723891.index
-\ProjectSemi\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1292057781.index
-\SemiProject2\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2319226618.index
-\SemiProject\src\main\java
-=======
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2319226618.index
-\SemiProject\src\main\java
 C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2099158000.index
 \SemiProject\src\main\java
 C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3674818547.index
 \SemiProject\src\main\java
->>>>>>> 87b942f3c84738d323741306e19f47e26905878e
+C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3247723891.index
+\ProjectSemi\src\main\java
+C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2319226618.index
+\SemiProject\src\main\java

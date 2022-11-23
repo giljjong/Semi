@@ -1,17 +1,8 @@
 INDEX VERSION 1.4+C:\Semi\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-<<<<<<< HEAD
-2346471068.index
-=======
 1361544959.index
->>>>>>> 87b942f3c84738d323741306e19f47e26905878e
 3863655723.index
-577934925.index
-1361544959.index
-3674818547.index
 3610836568.index
-2226371416.index
-<<<<<<< HEAD
-=======
+577934925.index
 2346471068.index
->>>>>>> 87b942f3c84738d323741306e19f47e26905878e
+2226371416.index
 3635380749.index
