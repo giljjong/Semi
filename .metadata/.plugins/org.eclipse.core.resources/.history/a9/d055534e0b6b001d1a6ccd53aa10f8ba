@@ -1,0 +1,5 @@
+package com.gdu.semi.mapper;
+
+public interface AdminMapper {
+
+}
