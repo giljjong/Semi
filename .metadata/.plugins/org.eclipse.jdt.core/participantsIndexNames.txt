@@ -3,15 +3,5 @@ C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2319226618.index
 \SemiProject\src\main\java
 C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2099158000.index
 \SemiProject\src\main\java
-<<<<<<< HEAD
 C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3674818547.index
-\SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2547445693.index
-\SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4193743930.index
-\SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2319226618.index
-=======
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3652250759.index
->>>>>>> 4252f6ec4ac5f167c0e6a682d947c53cb4f842f8
 \SemiProject\src\main\java
