@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 public class MyFileUtil {
 
 	public String getFilename(String filename) {
-		
+
+		// 확장자 예외처리
 		String extension = null;
-		if (filename.endsWith("tar.gz")) {  //확자아 더 추가하기
+		if (filename.endsWith("tar.gz")) { //확장자 추가
 			extension = "tar.gz";
 		} else {
 			String[] arr = filename.split("\\.");
-			extension = arr[arr.length-1];
+			extension = arr[arr.length - 1];
 		}
 		return UUID.randomUUID().toString().replaceAll("\\-", "") + "." + extension;
 	}
@@ -25,11 +26,10 @@ public class MyFileUtil {
 	public String getTodayPath() {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
-		int month = calendar.get(Calendar.MONTH) +1 ;
+		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		String sep = Matcher.quoteReplacement(File.separator);
-		return "storage" + sep  + year + sep + makeZero(month) + sep + makeZero(day);
-		
+		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
 	}
 	
 	public String getYesterdayPath() {
@@ -41,9 +41,10 @@ public class MyFileUtil {
 		String sep = Matcher.quoteReplacement(File.separator);
 		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
 	}
-	
+
 	public String makeZero(int n) {
-		return (n < 10 ) ? "0" + n : "" + n;
+		
+		return (n < 10) ? "0" + n : "" + n;
 	}
 	
 }

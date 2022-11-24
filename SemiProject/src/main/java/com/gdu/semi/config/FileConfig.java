@@ -8,12 +8,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 public class FileConfig {
 
 	@Bean
-	public CommonsMultipartResolver miltipartResolver() {
+	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		
 		multipartResolver.setDefaultEncoding("UTF-8");
-		multipartResolver.setMaxUploadSizePerFile(1024 * 1024 * 10); // 파일 하나당 최대 10MB
-		multipartResolver.setMaxUploadSize(1024 * 1024 * 100); // 전체 파일 최대 100MB
+		multipartResolver.setMaxUploadSizePerFile(1024 * 1024 * 10);
+		multipartResolver.setMaxUploadSize(1024 * 1024 * 100);
 		return multipartResolver;
 	}
 }

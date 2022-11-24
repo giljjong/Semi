@@ -3,5 +3,3 @@ C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2319226618.index
 \SemiProject\src\main\java
 C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2099158000.index
 \SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3652250759.index
-\SemiProject\src\main\java

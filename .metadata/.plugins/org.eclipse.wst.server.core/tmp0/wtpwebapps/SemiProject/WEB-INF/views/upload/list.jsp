@@ -15,6 +15,7 @@
 			<a href= "${contextPath}/upload/write">작성</a>
 		</div>
 		<hr>
+		
 		<div>
 			<table border="1">
 				<thead>
@@ -31,7 +32,7 @@
 					<c:forEach items="${uploadList}" var="upload">
 						<tr>
 							<td>${upload.uploadBoardNo}</td>
-							<td>${upload.uploadtitle}</td>
+							<td><a href="${contextPath}/upload/detail?uploadBoardNo=${upload.uploadBoardNo}">${upload.uploadTitle}</a></td> 
 							<td>${upload.createDate}</td>
 							<td>${upload.attachCnt}</td>
 							<td>${upload.ip}</td>
@@ -41,6 +42,7 @@
 				</tbody>
 			</table>
 		</div>
+		
 	</div>
 	
 </body>
