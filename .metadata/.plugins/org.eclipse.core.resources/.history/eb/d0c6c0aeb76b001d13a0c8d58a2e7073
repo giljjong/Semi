@@ -1,0 +1,13 @@
+package com.gdu.semi.service;
+
+import java.util.List;
+
+import org.springframework.ui.Model;
+
+import com.gdu.semi.domain.SleepUserDTO;
+import com.gdu.semi.domain.UserDTO;
+
+public interface AdminService {
+	public List<UserDTO> findAllUsers();
+	public List<SleepUserDTO> findAllSleepUsers();
+}

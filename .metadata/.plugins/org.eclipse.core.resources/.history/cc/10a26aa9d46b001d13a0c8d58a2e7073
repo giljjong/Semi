@@ -1,0 +1,29 @@
+package com.gdu.semi.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.gdu.semi.service.AdminService;
+
+@Controller
+public class AdminController {
+	
+	@Autowired
+	private AdminService adminService;
+	
+	@GetMapping("/admin/user/list")
+	public String list(HttpServletRequest request, Model model) {
+		adminService.findAllUsers(request, model);
+		return "admin/user/list";
+	}
+	
+	@GetMapping("/admin/sleep/list")
+	public String sList(HttpServletRequest request, Model model) {
+		adminService.findAllSleepUsers(request, model);
+		return "admin/sleep/list";
+	}
+}

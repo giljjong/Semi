@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.semi.mapper.AdminMapper">
+
+	<!-- employees와 departments의 조인을 위한 resultMap -->
+	<resultMap type="AccessLogDTO" id="accessLogMap">
+		<result column="ACCESS_LOG_NO" property="accessLogNo" />
+		<result column="ID" property="id" />
+		<result column="LAST_LOGIN_DATE" property="lastLoginDate" />
+	</resultMap>
+	<resultMap type="UserDTO" id="UserMap">
+		<result column="USER_NO" property="userNo" />
+		<result column="ID" property="id" />
+		<result column="PW" property="pw" />
+		<result column="NAME" property="name" />
+		<result column="GENDER" property="gender" />
+		<result column="EMAIL" property="email" />
+		<result column="MOBILE" property="mobile" />
+		<result column="BIRTH_YEAR" property="birthYear" />
+		<result column="BIRTHDAY" property="birthDay" />
+		<result column="ROAD_ADDRESS" property="roadAddress" />
+		<result column="JIBUN_ADDRESS" property="jibunAddress" />
+		<result column="DETAIL_ADDRESS" property="detailAddress" />
+		<result column="EXTRA_ADDRESS" property="extraAddress" />
+		<result column="AGREE_CODE" property="agreeCode" />
+		<result column="SNS_TYPE" property="snsType" />
+		<result column="JOIN_DATE" property="joinDate" />
+		<result column="PW_MODIFY_DATE" property="pwModifyDate" />
+		<result column="INFO_MODIFY_DATE" property="infoModifyDate" />
+		<result column="SESSION_ID" property="sessionId" />
+		<result column="SESSION_LIMIT_DATE" property="sessionLimitDate" />
+		<result column="POINT" property="point" />
+		<collection resultMap="AccessLogDTO" property="accessLogDTO"></collection>
+	</resultMap>
+	
+	<select id="selectUserList" parameterType="Map" resultType="UserDTO">
+		SELECT C.RN, C.USER_NO, C.ID, C.PW, C.NAME, C.GENDER, C.EMAIL, C.BIRTHYEAR, C.BIRTHDAY, C.SNS_TYPE, C.JOIN_DATE, C.INFO_MODIFY_DATE, C.POINT, C.LAST_LOGIN_DATE
+  		  FROM (SELECT ROWNUM AS RN, B.USER_NO, B.ID, B.PW, B.NAME, B.GENDER, B.EMAIL, B.BIRTHYEAR, B.BIRTHDAY, B.SNS_TYPE, B.JOIN_DATE, B.INFO_MODIFY_DATE, B.POINT, B.LAST_LOGIN_DATE
+          		  FROM (SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.BIRTHYEAR, U.BIRTHDAY, U.SNS_TYPE, U.JOIN_DATE, U.INFO_MODIFY_DATE, U.POINT, A.LAST_LOGIN_DATE
+                  		  FROM USERS U LEFT OUTER JOIN ACCESS_LOG A
+                    		ON U.ID = A.ID
+                 		 ORDER BY U.JOIN_DATE) B) C
+ 		 WHERE C.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectSleepUserList" resultType="SleepUserDTO">
+		SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, LAST_LOGIN_DATE, SLEEP_DATE, POINT
+		  FROM SLEEP_USERS
+		 ORDER BY USER_NO DESC
+	</select>
+	
+	<select id="countUser" resultType="int">
+		SELECT COUNT(*)
+		  FROM USERS
+	</select>
+	
+	<select id="countSleepUser" resultType="int">
+		SELECT COUNT(*)
+		  FROM SLEEP_USERS
+	</select>
+	
+</mapper>
