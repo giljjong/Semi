@@ -7,7 +7,35 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
+
+<script>
+	$(document).ready(function(){
+		$.ajax({
+			type : 'get',
+			url : '${contextPath}/upload/jlist',
+			dataType: 'json',
+			success: function(resData){
+				$.each(resData, function( i , uploadList){
+					$('<tr>')
+					.append( $('<td>').text(uploadList.uploadBoardNo) )
+					.append( $('<td>').html('<a href="${contextPath}/upload/detail?uploadNo=${upload.uploadNo}">' + uploadList.uploadTitle + '</a>'))
+					.append( $('<td>').text(uploadList.createDate) )
+					.append( $('<td>').text(uploadList.attachCnt) )
+					.append( $('<td>').text(uploadList.ip) )
+					.append( $('<td>').text(uploadList.hit) )
+					.appendTo('#result');	
+					/* <a href="${contextPath}/upload/detail?uploadNo=${upload.uploadNo}">${upload.title}</a> */
+				})
+			},
+			error: function(jqXHR){
+				alert('등록이 실패했습니다.');
+			}
+		})
+		
+	})
+</script>
 </head>
 <body>
 	<div>
@@ -28,17 +56,7 @@
 						<td>조회수</td>
 					</tr>
 				</thead>
-				<tbody>
-					<c:forEach items="${uploadList}" var="upload">
-						<tr>
-							<td>${upload.uploadBoardNo}</td>
-							<td><a href="${contextPath}/upload/detail?uploadBoardNo=${upload.uploadBoardNo}">${upload.uploadTitle}</a></td> 
-							<td>${upload.createDate}</td>
-							<td>${upload.attachCnt}</td>
-							<td>${upload.ip}</td>
-							<td>${upload.hit}</td>
-						</tr>
-					</c:forEach>
+				<tbody id ="result">
 				</tbody>
 			</table>
 		</div>

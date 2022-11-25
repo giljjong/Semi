@@ -5,7 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -26,7 +28,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.domain.AttachDTO;
 import com.gdu.semi.domain.UploadBoardDTO;
-import com.gdu.semi.domain.UserDTO;
 import com.gdu.semi.mapper.UploadBoardMapper;
 import com.gdu.semi.util.MyFileUtil;
 
@@ -42,19 +43,29 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	private MyFileUtil myFileUtil;
 	
 	@Override
-	public List<UploadBoardDTO> getUpLoadList() {
-		return uploadBoardMapper.selectUploadList();
+	public ResponseEntity<Object> getUpLoadList() {
+		
+		List<UploadBoardDTO> uploadList = uploadBoardMapper.selectUploadList();
+		
+//		HttpHeaders header = new HttpHeaders();
+//		header.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+//		Map<String, Object> result = new HashMap<>();
+//		result.put("uploadList", uploadList);
+		
+		return new ResponseEntity<Object>(uploadList , HttpStatus.OK) ;
 	}
 	
 	
 	@Transactional
 	@Override
-	public void save(MultipartHttpServletRequest multipartreRequest, HttpServletResponse response) {
+	public ResponseEntity<Object> save(MultipartHttpServletRequest multipartreRequest, HttpServletResponse response) {
 		
 		String title = multipartreRequest.getParameter("title");
 		String content = multipartreRequest.getParameter("content");
 		String ip = multipartreRequest.getRemoteAddr();
 		String id = "admin" ;
+		
+	
 		
 		UploadBoardDTO upload = UploadBoardDTO.builder()
 				.uploadTitle(title)
@@ -62,6 +73,8 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 				.ip(ip)
 				.id(id)
 				.build();
+		
+	
 		
 		int uploadResult = uploadBoardMapper.insertUpload(upload);
 		
@@ -93,7 +106,7 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 					String filesystem = myFileUtil.getFilename(origin);
 					
 					String path = myFileUtil.getTodayPath();
-					System.out.println(path);
+					
 					File dir =new File(path);
 					if(dir.exists() == false ) {
 						dir.mkdirs();
@@ -117,29 +130,37 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 			}
 		}
 		
-	
 		
-		try {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			
-			if(uploadResult > 0 && attachResult == files.size()) {
-				out.println("<script>");
-				out.println("alert('업로드 되었습니다.');");
-				out.println("location.href='" + multipartreRequest.getContextPath() + "/upload/list'");
-				out.println("</script>");
-			} else {
-				out.println("<script>");
-				out.println("alert('업로드 실패했습니다.');");
-				out.println("history.back();");
-				out.println("</script>");
-			}
-			out.close();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		ResponseEntity<Object> entity = null;
+		if(uploadResult > 0 && attachResult == files.size()) {
+			entity = new ResponseEntity<Object>(HttpStatus.OK);  // $.ajax()의 success에서 처리
+		} else {
+			entity = new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);  // $.ajax()의 error에서 처리
 		}
 		
+		
+//		try {
+//			response.setContentType("text/html; charset=UTF-8");
+//			PrintWriter out = response.getWriter();
+//			
+//			if(uploadResult > 0 && attachResult == files.size()) {
+//				out.println("<script>");
+//				out.println("alert('업로드 되었습니다.');");
+//				out.println("location.href='" + multipartreRequest.getContextPath() + "/upload/list'");
+//				out.println("</script>");
+//			} else {
+//				out.println("<script>");
+//				out.println("alert('업로드 실패했습니다.');");
+//				out.println("history.back();");
+//				out.println("</script>");
+//			}
+//			out.close();
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+		return entity;
 	}
 	
 	@Override
