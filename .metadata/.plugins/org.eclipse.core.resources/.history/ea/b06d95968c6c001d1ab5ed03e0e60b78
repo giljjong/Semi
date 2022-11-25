@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.semi.mapper.AdminMapper">
+
+	<resultMap type="AccessLogDTO" id="AccessLogMap">
+		<result column="ACCESS_LOG_NO" property="accessLogNo" />
+		<result column="ID" property="id" />
+		<result column="LAST_LOGIN_DATE" property="lastLoginDate" />
+	</resultMap>
+	<resultMap type="SleepUserDTO" id="SleepUserMap">
+		<result column="USER_NO" property="userNo" />
+		<result column="ID" property="id" />
+		<result column="PW" property="pw" />
+		<result column="NAME" property="name" />
+		<result column="GENDER" property="gender" />
+		<result column="EMAIL" property="email" />
+		<result column="MOBILE" property="mobile" />
+		<result column="BIRTH_YEAR" property="birthYear" />
+		<result column="BIRTHDAY" property="birthDay" />
+		<result column="POSTCODE" property="postcode" />
+		<result column="ROAD_ADDRESS" property="roadAddress" />
+		<result column="JIBUN_ADDRESS" property="jibunAddress" />
+		<result column="DETAIL_ADDRESS" property="detailAddress" />
+		<result column="EXTRA_ADDRESS" property="extraAddress" />
+		<result column="AGREE_CODE" property="agreeCode" />
+		<result column="SNS_TYPE" property="snsType" />
+		<result column="JOIN_DATE" property="joinDate" />
+		<result column="LAST_LOGIN_DATE" property="lastLoginDate" />
+		<result column="SLEEP_DATE" property="sleepDate" />
+		<result column="POINT" property="point" />
+	</resultMap>
+	<resultMap type="UserDTO" id="UserMap">
+		<result column="USER_NO" property="userNo" />
+		<result column="ID" property="id" />
+		<result column="PW" property="pw" />
+		<result column="NAME" property="name" />
+		<result column="GENDER" property="gender" />
+		<result column="EMAIL" property="email" />
+		<result column="MOBILE" property="mobile" />
+		<result column="BIRTH_YEAR" property="birthYear" />
+		<result column="BIRTHDAY" property="birthDay" />
+		<result column="POSTCODE" property="postcode" />
+		<result column="ROAD_ADDRESS" property="roadAddress" />
+		<result column="JIBUN_ADDRESS" property="jibunAddress" />
+		<result column="DETAIL_ADDRESS" property="detailAddress" />
+		<result column="EXTRA_ADDRESS" property="extraAddress" />
+		<result column="AGREE_CODE" property="agreeCode" />
+		<result column="SNS_TYPE" property="snsType" />
+		<result column="JOIN_DATE" property="joinDate" />
+		<result column="PW_MODIFY_DATE" property="pwModifyDate" />
+		<result column="INFO_MODIFY_DATE" property="infoModifyDate" />
+		<result column="SESSION_ID" property="sessionId" />
+		<result column="SESSION_LIMIT_DATE" property="sessionLimitDate" />
+		<result column="POINT" property="point" />
+		<collection resultMap="AccessLogMap" property="accessLogDTO"></collection>
+	</resultMap>
+	<resultMap type="AllUserDTO" id="AllUserMap">
+		<collection resultMap="UserMap" property="userDTO"></collection>
+		<collection resultMap="SleepUserMap" property="sleepUserDTO"></collection>
+	</resultMap>
+	
+	<select id="selectUserList" parameterType="Map" resultMap="AllUserMap">
+		SELECT D.RN, D.USER_NO, D.ID, D.PW, D.NAME, D.GENDER, D.EMAIL, D.BIRTHYEAR, D.BIRTHDAY, D.SNS_TYPE, D.JOIN_DATE, D.INFO_MODIFY_DATE, D.LAST_LOGIN_DATE, D.SLEEP_DATE, D.POINT
+  		  FROM (SELECT ROWNUM AS RN OVER(PARTITION BY C.JOIN_DATE), C.USER_NO, C.ID, C.PW, C.NAME, C.GENDER, C.EMAIL, C.BIRTHYEAR, C.BIRTHDAY, C.SNS_TYPE, C.JOIN_DATE, C.INFO_MODIFY_DATE, C.LAST_LOGIN_DATE, C.SLEEP_DATE, C.POINT
+          		  FROM (SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.BIRTHYEAR, U.BIRTHDAY, U.SNS_TYPE, U.JOIN_DATE, U.INFO_MODIFY_DATE, A.LAST_LOGIN_DATE, NULL SLEEP_DATE, U.POINT
+                  		  FROM USERS U LEFT OUTER JOIN ACCESS_LOG A
+                    		ON U.ID = A.ID
+                		UNION
+                		SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, BIRTHYEAR, BIRTHDAY, SNS_TYPE, JOIN_DATE, NULL INFO_MODIFY_DATE, LAST_LOGIN_DATE, SLEEP_DATE, POINT
+                  		  FROM SLEEP_USERS) C) D
+ 		 WHERE D.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectSleepUserList" resultType="SleepUserDTO">
+		SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, LAST_LOGIN_DATE, SLEEP_DATE, POINT
+		  FROM SLEEP_USERS
+		 ORDER BY USER_NO DESC
+	</select>
+	
+	<select id="selectUserCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+ 		  FROM USERS U FULL OUTER JOIN SLEEP_USERS S
+    		ON U.ID = S.ID
+		<where>
+		  <if test="column=='ID'">${column} LIKE '%' || #{query} || '%'</if>
+		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">${column} BETWEEN #{start} AND #{stop}</if>
+		</where>
+	</select>
+	
+	<select id="selectUserCountByQuery" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM ${state}
+		  <where>
+		  <if test="column=='ID'">${column} LIKE '%' || #{query} || '%'</if>
+		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">${column} BETWEEN #{start} AND #{stop}</if>
+		</where>
+		 ORDER BY JOIN_DATE
+	</select>
+	
+	<select id="countSleepUser" resultType="int">
+		SELECT COUNT(*)
+		  FROM SLEEP_USERS
+	</select>
+	
+</mapper>

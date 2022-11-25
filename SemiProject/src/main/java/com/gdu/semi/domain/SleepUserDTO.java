@@ -2,6 +2,8 @@ package com.gdu.semi.domain;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +31,11 @@ public class SleepUserDTO {
 	private String extraAddress;
 	private int agreeCode;
 	private String snsType;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date joinDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date lastLoginDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date sleepDate;
 	private int point;
 }
