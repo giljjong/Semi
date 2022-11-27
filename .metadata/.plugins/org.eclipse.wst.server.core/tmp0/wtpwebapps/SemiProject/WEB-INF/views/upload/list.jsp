@@ -14,20 +14,72 @@
 	$(document).ready(function(){
 		$.ajax({
 			type : 'get',
-			url : '${contextPath}/upload/jlist',
+			url : '${contextPath}/upload/ulist',
 			dataType: 'json',
+			data : 'pageNo=' ,
 			success: function(resData){
-				$.each(resData, function( i , uploadList){
+				console.log(resData);
+				$.each(resData.uploadList, function( i , uploadList){
 					$('<tr>')
 					.append( $('<td>').text(uploadList.uploadBoardNo) )
-					.append( $('<td>').html('<a href="${contextPath}/upload/detail?uploadNo=${upload.uploadNo}">' + uploadList.uploadTitle + '</a>'))
+					.append( $('<td>').append( $('<a>').text(uploadList.uploadTitle).attr('href' ,'${contextPath}/upload/incrase/hit?uploadBoardNo=' + uploadList.uploadBoardNo ) ) )
 					.append( $('<td>').text(uploadList.createDate) )
 					.append( $('<td>').text(uploadList.attachCnt) )
 					.append( $('<td>').text(uploadList.ip) )
 					.append( $('<td>').text(uploadList.hit) )
 					.appendTo('#result');	
 					/* <a href="${contextPath}/upload/detail?uploadNo=${upload.uploadNo}">${upload.title}</a> */
+							/* uploadList.uploadTitle */
+							/* .attr('href', '${contextPath}/upload/detail?uploadNo=') */
 				})
+				
+				var str = '' ;
+				
+				console.log(resData.beginPage);
+				console.log(resData.endPage);
+				console.log(resData.totalPage); 
+				console.log(resData.page); 
+				
+			
+			/* 	var str2 = 2;
+				str2.appendTo('#paging'); */
+				 /* str = $('<a>').text('2').attr('href', '${contextPath}?page=' + '2' );
+				console.log(str);
+				
+				str.appendTo('#paging');   */
+				
+		 	    if(resData.beginPage != 1){
+					str.append( $('<a>').text('◀').attr('href', '${contextPath}?page=' + resData.beginpage -1 ) );
+					
+				}
+				
+			 	for(let p = resData.beginPage; p <= resData.endPage; p++){
+				 	if(p == resData.page){
+				 		$(str).append(p); 
+						console.log(p);
+					}  
+					else {
+						$(str).append( $('<a>').text(p).attr('href', '${contextPath}?page=' + p ) );
+						console.log(str);
+					} 
+				} 
+				
+				if(resData.endPage != resData.totalPage) {
+					str.append( $('<a>').text('▶').attr('href', '${contextPath}?page=' + resData.endPage+1 ) ) ;
+					console.log(str);
+				}    
+				console.log(str);
+				/*  let p = resData.beginPage
+				 var str2 = '';
+				 str2 = $('<a>').text('◀').attr('href', '${contextPath}?page=' + resData.beginpage -1 ) ;
+				 str2.append( $('<a>').text('▶').attr('href', '${contextPath}?page=' + resData.endPage+1 ) ); 
+				 str2.append( p  ); 
+				 str2.append( $('<a>').text(p).attr('href', '${contextPath}?page=' + p ) );
+				 console.log(str2);   */
+				 $(str).appendTo('#paging');   
+				
+				
+				
 			},
 			error: function(jqXHR){
 				alert('등록이 실패했습니다.');
@@ -58,6 +110,13 @@
 				</thead>
 				<tbody id ="result">
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="6" id="paging" >
+						
+						</td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 		

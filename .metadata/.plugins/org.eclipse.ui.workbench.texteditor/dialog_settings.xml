@@ -10,8 +10,8 @@
 		<list key="findhistory">
 			<item value="attachList"/>
 			<item value="attach"/>
-			<item value="userAgent"/>
 			<item value="uploadList"/>
+			<item value="userAgent"/>
 			<item value="subString"/>
 			<item value="plugins"/>
 			<item value="org"/>

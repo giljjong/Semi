@@ -6,10 +6,23 @@
 
 <mapper namespace="com.gdu.semi.mapper.UploadBoardMapper">
 	
-	<select id="selectUploadList" resultType="UploadBoardDTO">
+	<select id="selectUploadListCount" resultType="int">
+		SELECT COUNT(*)
+			FROM UPLOAD_BOARD
+	</select>
+	
+	<!-- <select id="selectUploadList" resultType="UploadBoardDTO">
 		SELECT U.UPLOAD_BOARD_NO, U.ID, U.UPLOAD_TITLE, U.UPLOAD_CONTENT, U.IP, U.CREATE_DATE, U.MODIFY_DATE, U.HIT,
 		(SELECT COUNT(*) FROM ATTACH A WHERE U.UPLOAD_BOARD_NO = A.UPLOAD_BOARD_NO) AS ATTACH_CNT
 		FROM UPLOAD_BOARD U
+	</select> -->
+	
+	<select id="selectUploadListByMap" parameterType="Map" resultType="UploadBoardDTO">
+		SELECT ROW_NUM, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT, ATTACH_CNT
+			FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_BOARD_NO DESC) AS ROW_NUM, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT,
+				(SELECT COUNT(*) FROM ATTACH A WHERE U.UPLOAD_BOARD_NO = A.UPLOAD_BOARD_NO) AS ATTACH_CNT
+			FROM UPLOAD_BOARD U ) A
+        WHERE ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
 	<update id="updateHit" parameterType="int">

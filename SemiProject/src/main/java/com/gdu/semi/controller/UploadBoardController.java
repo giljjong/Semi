@@ -1,7 +1,5 @@
 package com.gdu.semi.controller;
 
-import java.awt.PageAttributes.MediaType;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,10 +23,9 @@ public class UploadBoardController {
 	@Autowired
 	private UploadBoardService uploadBoardService;
 
-	@GetMapping("/")
-	public String welcome() {
-		return "index";
-	}
+	
+	@GetMapping("/") public String welcome() { return "index"; }
+	 
 	
 	@GetMapping("/upload/list")
 	public String list() {
@@ -36,9 +33,9 @@ public class UploadBoardController {
 	}
 
 	@ResponseBody
-	@GetMapping(value = "/upload/jlist", produces="application/json; charset=UTF-8")
-	public ResponseEntity<Object> jsonList() {
-		return uploadBoardService.getUpLoadList();
+	@GetMapping(value = "/upload/ulist", produces="application/json; charset=UTF-8")
+	public ResponseEntity<Object> jsonList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo ) {
+		return uploadBoardService.getUpLoadList(pageNo);
 	}
 
 	@GetMapping("/upload/write")
@@ -53,15 +50,32 @@ public class UploadBoardController {
 	}
 	
 	@GetMapping("/upload/detail")
-	public String detail(@RequestParam(value = "uploadBoardNo", required = false , defaultValue = "0" )int uploadBoardNo, Model model) {
-		uploadBoardService.getUploadByNo(uploadBoardNo, model);
+	public String detail(@RequestParam(value = "uploadBoardNo", required = false, defaultValue = "0")int uploadBoardNo, Model model) {
+		model.addAttribute("uploadBoardNo", uploadBoardNo );
 		return "upload/detail";
 	}
+	
+	@GetMapping("/upload/incrase/hit")
+	public String incraseHit(@RequestParam(value = "uploadBoardNo", required = false, defaultValue = "0")int uploadBoardNo) {
+		int result = uploadBoardService.increaseHit(uploadBoardNo);
+		if(result > 0 ) {
+			return "redirect:/upload/detail?uploadBoardNo=" + uploadBoardNo;
+		} else {
+			return "redirect:/upload/list";
+		}
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("/upload/detail/ulist")
+	public ResponseEntity<Object> detailList(@RequestParam(value = "uploadBoardNo", required = false, defaultValue = "0")int uploadBoardNo ){
+		return uploadBoardService.getUploadByNo(uploadBoardNo);
+	}
+	
 	
 	@ResponseBody
 	@GetMapping("/upload/download")
 	public ResponseEntity<Resource> download(@RequestHeader("User-Agent") String userAgent, @RequestParam("attachNo") int attachNo){
-		System.out.println("userAgent  :   " + userAgent);
 		return uploadBoardService.download(userAgent, attachNo);
 	}
 	
@@ -72,15 +86,20 @@ public class UploadBoardController {
 		return uploadBoardService.downloadAll(userAgent, uploadBoardNo);
 	}
 	
+	
+
 	@PostMapping("/upload/edit")
 	public String edit(@RequestParam("uploadBoardNo") int uploadBoardNo, Model model) {
-		uploadBoardService.getUploadByNo(uploadBoardNo, model);
+		
+		model.addAttribute("edit", uploadBoardService.getUploadByNo(uploadBoardNo).getBody() );
 		return "upload/edit";
 	}
 	
-	@PostMapping("/upload/modify")
-	public void modify(MultipartHttpServletRequest mulRequest, HttpServletResponse response) {
-		uploadBoardService.modifyUpload(mulRequest, response);
+	@ResponseBody
+	@PostMapping("/upload/uModify")
+	public ResponseEntity<Object> modify(MultipartHttpServletRequest mulRequest, HttpServletResponse response) {
+		
+		return uploadBoardService.modifyUpload(mulRequest, response);
 	}
 	
 	@GetMapping("/upload/attach/remove")
@@ -90,8 +109,8 @@ public class UploadBoardController {
 	}
 	
 	@PostMapping("/upload/remove")
-	public void remove(HttpServletRequest request, HttpServletResponse response) {
-		uploadBoardService.removeUpload(request, response);
+	public ResponseEntity<Object> remove(HttpServletRequest request, HttpServletResponse response) {
+		return uploadBoardService.removeUpload(request, response);
 	}
 	
 }

@@ -7,16 +7,16 @@
   <icon>https://spring.io/favicon.ico</icon>
   <updated>2022-11-24T21:53:00Z</updated>
   <entry>
-    <title>Spring Modulith 0.1 GA released</title>
-    <link rel="alternate" href="https://spring.io/blog/2022/11/24/spring-modulith-0-1-ga-released" />
+    <title>Spring Modulith 0.1 released</title>
+    <link rel="alternate" href="https://spring.io/blog/2022/11/24/spring-modulith-0-1-released" />
     <category term="releases" label="Releases" />
     <author>
       <name>Oliver Drotbohm</name>
     </author>
     <id>tag:spring.io,2022-11-24:5020</id>
     <updated>2022-11-24T21:53:00Z</updated>
-    <content type="html">&lt;p&gt;Hot on the heels of Spring Boot 3.0 GA, it&amp;rsquo;s my pleasure to announce the availability of &lt;a href="https://github.com/spring-projects-experimental/spring-modulith/releases/tag/0.1.0"&gt;Spring Modulith 0.1 GA&lt;/a&gt;. The release concludes the integration of the &lt;a href="https://github.com/moduliths/moduliths"&gt;Moduliths&lt;/a&gt; project into the Spring ecosystem. I want to especially thank &lt;a href="https://github.com/dmbelyaev"&gt;Dmitry Belyaev&lt;/a&gt; and &lt;a href="https://github.com/bkieling"&gt;Bj?rn Kieling&lt;/a&gt; who helped a lot during the migration and contributed significant new features to the project, the event publication repository implementations for JDBC and MongoDB in particular.&lt;/p&gt;
-&lt;p&gt;For a general introduction into the project, please check out the &lt;a href="https://spring.io/blog/2022/10/21/introducing-spring-modulith"&gt;original announcement&lt;/a&gt; and this &lt;a href="https://www.infoq.com/news/2022/11/spring-modulith-launch/"&gt;InfoQ article&lt;/a&gt;. We are going to proceed with further minor versions and aim for a 1.0 release on top of Spring Boot 3.1 to promote the project out of experimental status in Q2 2023.&lt;/p&gt;
+    <content type="html">&lt;p&gt;Hot on the heels of Spring Boot 3.0 GA, it&amp;rsquo;s my pleasure to announce the availability of &lt;a href="https://github.com/spring-projects-experimental/spring-modulith/releases/tag/0.1.0"&gt;Spring Modulith 0.1&lt;/a&gt;. The release concludes the integration of the &lt;a href="https://github.com/moduliths/moduliths"&gt;Moduliths&lt;/a&gt; project into the Spring ecosystem. I want to especially thank &lt;a href="https://github.com/dmbelyaev"&gt;Dmitry Belyaev&lt;/a&gt; and &lt;a href="https://github.com/bkieling"&gt;Bj?rn Kieling&lt;/a&gt; who helped a lot during the migration and contributed significant new features to the project, the event publication repository implementations for JDBC and MongoDB in particular.&lt;/p&gt;
+&lt;p&gt;For a general introduction into the project, please check out the &lt;a href="https://spring.io/blog/2022/10/21/introducing-spring-modulith"&gt;original announcement&lt;/a&gt; and this &lt;a href="https://www.infoq.com/news/2022/11/spring-modulith-launch/"&gt;InfoQ article&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a href="https://github.com/spring-projects-experimental/spring-modulith/releases/tag/0.1.0"&gt;Changelog&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-modulith/docs/0.1.0/reference/html/"&gt;Reference documentation&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>

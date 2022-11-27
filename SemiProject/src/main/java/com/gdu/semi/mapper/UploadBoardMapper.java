@@ -1,6 +1,7 @@
 package com.gdu.semi.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,7 +11,9 @@ import com.gdu.semi.domain.UserDTO;
 
 @Mapper
 public interface UploadBoardMapper {
-	public List<UploadBoardDTO> selectUploadList();
+	public int selectUploadListCount();
+//	public List<UploadBoardDTO> selectUploadList();
+	public List<UploadBoardDTO> selectUploadListByMap( Map<String, Object> map );
 	public int updateHit(int uploadBoardNo);
 	
 	public int insertUpload(UploadBoardDTO upload);
