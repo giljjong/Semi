@@ -73,18 +73,18 @@
                 		UNION
                 		SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, BIRTHYEAR, BIRTHDAY, SNS_TYPE, JOIN_DATE, NULL INFO_MODIFY_DATE, LAST_LOGIN_DATE, SLEEP_DATE, POINT
                   		  FROM SLEEP_USERS) C) D
- 		 WHERE D.RN BETWEEN #{begin} AND #{end}
+ 		 <where>
+ 		 	D.RN BETWEEN #{begin} AND #{end}
+		  <if test="column=='ID'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		  <if test="column=='JOIN_DATE' or column=='SLEEP_DATE'">AND D.${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">AND ${column} BETWEEN #{first} AND #{last}</if>
+		</where>
 	</select>
 	
 	<select id="selectAllUserCountByQuery" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
  		  FROM USERS U FULL OUTER JOIN SLEEP_USERS S
     		ON U.ID = S.ID
-		<where>
-		  <if test="column=='ID'">${column} LIKE '%' || #{query} || '%'</if>
-		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
-		  <if test="column=='POINT'">${column} BETWEEN #{start} AND #{stop}</if>
-		</where>
 	</select>
 	
 	<!-- 활동유저 조회 -->
@@ -97,9 +97,9 @@
                			 ORDER BY U.JOIN_DATE DESC) B) C
 		<where>
 		  <if test="true">C.RN BETWEEN #{begin} AND #{end}</if>
-		  <if test="column=='ID'">AND ${column} LIKE '%' || #{query} || '%'</if>
-		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
-		  <if test="column=='POINT'">AND ${column} BETWEEN #{start} AND #{stop}</if>
+		  <if test="column=='ID'">AND C.${column} LIKE '%' || #{query} || '%'</if>
+		  <if test="column=='JOIN_DATE'">AND C.${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">AND C.${column} BETWEEN #{first} AND #{last}</if>
 		</where>
 	</select>
 	
@@ -108,8 +108,8 @@
 		  FROM USERS
 		<where>
 		  <if test="column=='ID'">${column} LIKE '%' || #{query} || '%'</if>
-		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
-		  <if test="column=='POINT'">${column} BETWEEN #{start} AND #{stop}</if>
+		  <if test="column=='JOIN_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">${column} BETWEEN #{first} AND #{last}</if>
 		</where>
 	</select>
 	
@@ -122,9 +122,9 @@
                  		 ORDER BY SLEEP_DATE DESC) A) B
 		<where>
 			B.RN BETWEEN #{begin} AND #{end}
-		  <if test="column=='ID'">AND ${column} LIKE '%' || #{query} || '%'</if>
-		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
-		  <if test="column=='POINT'">AND ${column} BETWEEN #{start} AND #{stop}</if>
+		  <if test="column=='ID'">AND B.${column} LIKE '%' || #{query} || '%'</if>
+		  <if test="column=='JOIN_DATE' or column=='SLEEP_DATE'">AND B.${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">AND B.${column} BETWEEN #{first} AND #{last}</if>
 		</where>
 		 ORDER BY SLEEP_DATE DESC
 	</select>
@@ -134,12 +134,29 @@
 		  FROM SLEEP_USERS
 		<where>
 		  <if test="column=='ID'">${column} LIKE '%' || #{query} || '%'</if>
-		  <if test="column=='CREATE_DATE' or column=='SLEEP_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
-		  <if test="column=='POINT'">${column} BETWEEN #{start} AND #{stop}</if>
+		  <if test="column=='JOIN_DATE' or column=='SLEEP_DATE'">${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		  <if test="column=='POINT'">${column} BETWEEN #{first} AND #{last}</if>
 		</where>
 	</select>
 	
+	<!-- 유저 삭제 -->
+	<delete id="deleteUser" parameterType="String">
+		DELETE
+		  FROM USERS
+		 WHERE ID = #{id}
+	</delete>
 	
+	<delete id="deleteAccessLog" parameterType="String">
+		DELETE
+		  FROM AccessLogDTO
+		 WHERE ID = #{id}
+	</delete>
+	
+	<delete id="deleteSleepUser" parameterType="String">
+		DELETE
+		  FROM SLEEP_USERS
+		 WHERE ID = #{id}
+	</delete>
 	
 	
 </mapper>

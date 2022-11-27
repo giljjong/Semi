@@ -17,4 +17,7 @@ public interface AdminMapper {
 	public int selectUserCountByQuery(Map<String, Object> map);
 	public List<AllUserDTO> selectSleepUsersByQuery(Map<String, Object> map);
 	public int selectSleepUserCountByQuery(Map<String, Object> map);
+	public int deleteUser(String id);
+	public int deleteAccessLog(String id);
+	public int deleteSleepUser(String id);
 }

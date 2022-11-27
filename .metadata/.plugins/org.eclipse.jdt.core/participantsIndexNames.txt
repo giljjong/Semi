@@ -1,11 +1,7 @@
 INDEX VERSION 1.131
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\973578113.index
+C:\GDJ\SEMI\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3674818547.index
 \SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2099158000.index
+C:\GDJ\SEMI\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2099158000.index
 \SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3674818547.index
-\SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2258511403.index
-\SemiProject\src\main\java
-C:\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4082938320.index
+C:\GDJ\SEMI\Semi\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\973578113.index
 \SemiProject\src\main\java

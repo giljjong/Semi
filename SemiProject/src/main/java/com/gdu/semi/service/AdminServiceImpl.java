@@ -63,14 +63,12 @@ public class AdminServiceImpl implements AdminService {
 	public Map<String, Object> findUsers(HttpServletRequest request) {
 		
 		String state = request.getParameter("state");
-		if(state == null) {
-			System.out.println(findAllUsers(request));
-			return findAllUsers(request);
-		}
 		String column = request.getParameter("column");
 		String query = request.getParameter("query");
 		String start = request.getParameter("start");
 		String stop = request.getParameter("stop");
+		String first = request.getParameter("first");
+		String last = request.getParameter("last");
 		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
@@ -80,7 +78,10 @@ public class AdminServiceImpl implements AdminService {
 		map.put("query", query);
 		map.put("start", start);
 		map.put("stop", stop);
+		map.put("first", first);
+		map.put("last", last);
 		
+		int sleepUserCnt = 0;
 		int totalRecord = 0;
 		List<AllUserDTO> users = null;
 		
@@ -100,6 +101,14 @@ public class AdminServiceImpl implements AdminService {
 			map.put("begin", pageUtil.getBegin());
 			map.put("end", pageUtil.getEnd());
 			users = adminMapper.selectSleepUsersByQuery(map);
+		} else {
+			sleepUserCnt = adminMapper.selectSleepUserCountByQuery(map);
+			totalRecord = adminMapper.selectUserCountByQuery(map) + sleepUserCnt;
+			pageUtil.setPageUtil(page, totalRecord);
+			
+			map.put("begin", pageUtil.getBegin());
+			map.put("end", pageUtil.getEnd());
+			users = adminMapper.selectAllUserList(map);
 		}
 		
 		String path = null;
@@ -126,11 +135,10 @@ public class AdminServiceImpl implements AdminService {
 			result.put("users", users);
 			result.put("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 			result.put("totalRecord", totalRecord);
+			result.put("sleepUserCnt", sleepUserCnt);
 			result.put("paging", pageUtil.getPaging(path));
 			result.put("status", 200);
 		}
-		
-		System.out.println(result.get("users"));
 		
 		return result;
 	}
