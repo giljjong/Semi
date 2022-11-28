@@ -243,7 +243,6 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	
 	@Override
 	public ResponseEntity<Resource> downloadAll(String userAgent, int uploadBoardNo) {
-		System.out.println(uploadBoardNo);
 		List<AttachDTO> attachList = uploadBoardMapper.selectAttachList(uploadBoardNo);
 		
 		FileOutputStream fout = null;
@@ -292,9 +291,11 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		File file = new File(tmpPath, tmpName);
 		Resource resource = new FileSystemResource(file);
 		
+		
 		if(resource.exists() == false ) {
 			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
 		}
+		
 		
 		HttpHeaders header = new HttpHeaders();
 		header.add("Content-Disposition", "atachment; filename=" + tmpName);
@@ -360,6 +361,7 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 				e.printStackTrace();
 			}
 		}
+		
 		
 		ResponseEntity<Object> entity = null;
 		if(uploadResult > 0 && attachResult == files.size()) {

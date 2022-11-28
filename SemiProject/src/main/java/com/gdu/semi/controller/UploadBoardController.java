@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,8 @@ public class UploadBoardController {
 	 
 	
 	@GetMapping("/upload/list")
-	public String list() {
+	public String list(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo, Model model) {
+		model.addAttribute("pageNo", pageNo);
 		return "upload/list";
 	}
 
@@ -90,22 +92,29 @@ public class UploadBoardController {
 
 	@PostMapping("/upload/edit")
 	public String edit(@RequestParam("uploadBoardNo") int uploadBoardNo, Model model) {
-		
 		model.addAttribute("edit", uploadBoardService.getUploadByNo(uploadBoardNo).getBody() );
 		return "upload/edit";
 	}
 	
 	@ResponseBody
+	@PostMapping("/upload/uedit")
+	public ResponseEntity<Object> uedit(@RequestParam("uploadBoardNo") int uploadBoardNo, Model model){
+		model.addAttribute("edit", uploadBoardService.getUploadByNo(uploadBoardNo).getBody() );
+		System.out.println(uploadBoardService.getUploadByNo(uploadBoardNo).getBody());
+		return new ResponseEntity<Object>( uploadBoardService.getUploadByNo(uploadBoardNo).getBody(),HttpStatus.OK);
+	}
+	
+	
+	@ResponseBody
 	@PostMapping("/upload/uModify")
 	public ResponseEntity<Object> modify(MultipartHttpServletRequest mulRequest, HttpServletResponse response) {
-		
 		return uploadBoardService.modifyUpload(mulRequest, response);
 	}
 	
 	@GetMapping("/upload/attach/remove")
 	public String attachRemove(@RequestParam("uploadBoardNo") int uploadBoardNo, @RequestParam("attachNo") int attachNo) {
 		uploadBoardService.removeAttachByAttachNo(attachNo);
-		return "redirect:/upload/detail?uploadNo=" + uploadBoardNo;
+		return "redirect:/upload/detail?uploadBoardNo=" + uploadBoardNo;
 	}
 	
 	@PostMapping("/upload/remove")

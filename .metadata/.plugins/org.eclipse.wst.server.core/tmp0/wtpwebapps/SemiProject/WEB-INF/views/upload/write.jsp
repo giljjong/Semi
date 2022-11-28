@@ -41,11 +41,9 @@
 		
 	}
 	
-	
-	
 	$(document).ready(function(){
 		$('#btn_add').click(function(){
-			var form = $('#frm_btn')[0];
+			var form = $('#frm_write')[0];
 			console.log(form);
 			 var formData = new FormData(form); 
 		
@@ -68,6 +66,7 @@
 			})
 		}) 
 		
+		
 	})
 	
 	
@@ -77,7 +76,7 @@
 	<div>
 		<h1>작성화면</h1>
 		
-		<form id="frm_btn" enctype="multipart/form-data" >
+		<form id="frm_write"  >
 		
 			<div>
 				<label for="title">제목</label>

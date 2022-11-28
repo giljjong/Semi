@@ -10,7 +10,7 @@ public class PageUtil {
 
 	private int page; 
 	private int totalRecord;
-	private int recordPerPage = 10;
+	private int recordPerPage = 3;
 	private int begin;
 	private int end;
 	
@@ -37,12 +37,6 @@ public class PageUtil {
 			endPage = totalPage;
 		}
 		
-		/*
-		 * public String getPaging(String path) {
-		 * 
-		 * 
-		 * }
-		 */
 	}
 	
 }

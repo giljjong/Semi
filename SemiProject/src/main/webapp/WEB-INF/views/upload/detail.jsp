@@ -49,9 +49,11 @@
 					 .appendTo('#attachList');
 				 })
 				 
+				
 				 $('<a>')
 				 .text('모두 다운로드').attr('href', '${contextPath}/upload/downloadAll?uploadBoardNo=' + resData.upload.uploadBoardNo)
 				 .appendTo('#allDownload'); 
+				
 				  
 			},
 			error : function(jqXHR){
@@ -107,6 +109,7 @@
 		<div id = "allDownload">
 			<a href="${contextPath}/upload/downloadAll?uploadBoardNo= }">모두 다운로드</a>
 		</div>  --%>
+		<div id = "allDownload"></div>
 	</div>
 </body>
 </html>

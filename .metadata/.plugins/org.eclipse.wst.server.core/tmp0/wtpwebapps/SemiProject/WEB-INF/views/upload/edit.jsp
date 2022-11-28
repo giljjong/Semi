@@ -11,6 +11,7 @@
 <script>
 $(function(){
 	fn_fileCheck();
+	fn_removeAttach();
 });
 
 function fn_fileCheck(){
@@ -37,6 +38,66 @@ function fn_fileCheck(){
 		
 	});
 	
+	$(document).ready(function(){
+		$('#btn_edit').click(function(){
+			const form = $('#frm_edit')[0];
+			console.log(form);
+			const formData = new FormData(form);
+			$.ajax({
+				type : 'POST',
+				url :'${contextPath}/upload/uModify',
+				enctype :'multipart/form-data',
+				data : formData,
+				processData : false,
+				contentType : false,
+			    success : function(resData){
+					console.log(resData);
+					alert('수정이 성공했습니다.');
+					location.href='${contextPath}/upload/detail?uploadBoardNo=' + ${edit.upload.uploadBoardNo};
+				},
+				error: function(jqXHR){
+					alert('수정이 실패했습니다.');
+					history.back();
+				} 
+			})
+			
+		});
+		
+	    $.ajax({
+			type : 'POST',
+			url : '${contextPath}/upload/uedit?uploadBoardNo=' + ${edit.upload.uploadBoardNo} ,
+			dataType : 'json',
+			success : function(resData){
+				console.log(resData.upload.uploadBoardNo)
+				
+				$.each(resData.attachList, function(i, attach){
+				     $('<ul>')
+					 .append( $('<li>').append( $('<a>').text(attach.origin).attr('href', '${contextPath}/upload/attach/remove?uploadBoardNo='+ resData.upload.uploadBoardNo + '&attachNo=' + attach.attachNo).attr('class','attachRemove'  )   ) )
+					 .appendTo('#attachList'); 
+				 })
+			}
+			
+		})  
+		
+		/* function fn_removeAttach(){
+				// 첨부 삭제
+				$('.btn_attach_remove').click(function(){
+					if(confirm('해당 첨부파일을 삭제할까요?')){
+						location.href = '${contextPath}/upload/attach/remove?uploadNo=' + $(this).data('upload_no') + '&attachNo=' + $(this).data('attach_no');
+					}
+				});
+			} */
+	
+	})
+	
+	function fn_removeAttach(){
+		$('.attachRemove').click(function(){
+			if(confirm('해당 첨부파일을 삭제할까요?')){
+				alert('삭제했습니다.');
+			}
+		})
+	}
+	
 }
 
 </script>
@@ -44,35 +105,34 @@ function fn_fileCheck(){
 <body>
 	<div>
 		<h1>수정화면</h1>
-		
-		<form action="${contextPath}/upload/modify" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="uploadBoardNo" value = "${upload.uploadBoardNo}">
+		<form id ="frm_edit" >
+			<input type="hidden" name="uploadBoardNo" value = "${edit.upload.uploadBoardNo}">
 			<div>
 				<label for="title">제목</label>
-				<input type="text" id="title" name="title" value="${upload.uploadTitle}" required="required">
+				<input type="text" id="title" name="title" value="${edit.upload.uploadTitle}" required="required">
 			</div>
 			<div>
 				<label for="content">내용</label>
-				<input type="text" id="content" name="content" value="${upload.uploadContent}">
+				<input type="text" id="content" name="content" value="${edit.upload.uploadContent}">
 			</div>
 			<div>
 				<label for="files">첨부 추가 </label>
 				<input type="file" id="files" name="files"   multiple="multiple">
 			</div>
 			<div>
-				<button>수정완료</button>
+				<input type="button" value="수정완료" id="btn_edit">
 				<input type="button" value="목록" onclick="location.href='${contextPath}/upload/list'">
 			</div>
-		
 		</form>
 		
 		<div>
 			<h3>첨부삭제</h3>
-			<c:forEach items="${attachList}" var="attach">
+			<div id ='attachList'></div>
+			<%-- <c:forEach items="${attachList}" var="attach">
 				<div>
 					${attach.origin} <input type="button" value="삭제" class="btn_attach_remove" data-upload_no="${upload.uploadBoardNo}" data-attach_no="${attach.attachNo}">
 				</div>
-			</c:forEach>
+			</c:forEach> --%>
 		</div>
 	</div>
 

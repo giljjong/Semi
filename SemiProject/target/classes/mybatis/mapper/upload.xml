@@ -107,4 +107,6 @@
 		FROM ATTACH
 		WHERE PATH = CONCAT('stoarge\\',TO_CHAR(SYSDATE -1, 'yyyy\\mm\\dd'))
 	</select>
+	
+	
 </mapper>

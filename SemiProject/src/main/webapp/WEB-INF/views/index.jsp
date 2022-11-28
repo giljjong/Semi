@@ -20,7 +20,7 @@
 	
 	<a href="free/list">자유게시판 가기</a>
 	<a href="gallery/list">갤러리게시판 가기</a>
-	<a href="upload/list">업로드게시판 가기</a>
+	<a href="upload/list?pageNo=1">업로드게시판 가기</a>
 	<a href="admin/list">관리자 페이지 가기</a>
 </body>
 </html>

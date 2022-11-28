@@ -11,80 +11,55 @@
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 
 <script>
-	$(document).ready(function(){
-		$.ajax({
-			type : 'get',
-			url : '${contextPath}/upload/ulist',
-			dataType: 'json',
-			data : 'pageNo=' ,
-			success: function(resData){
-				console.log(resData);
-				$.each(resData.uploadList, function( i , uploadList){
-					$('<tr>')
-					.append( $('<td>').text(uploadList.uploadBoardNo) )
-					.append( $('<td>').append( $('<a>').text(uploadList.uploadTitle).attr('href' ,'${contextPath}/upload/incrase/hit?uploadBoardNo=' + uploadList.uploadBoardNo ) ) )
-					.append( $('<td>').text(uploadList.createDate) )
-					.append( $('<td>').text(uploadList.attachCnt) )
-					.append( $('<td>').text(uploadList.ip) )
-					.append( $('<td>').text(uploadList.hit) )
-					.appendTo('#result');	
-					/* <a href="${contextPath}/upload/detail?uploadNo=${upload.uploadNo}">${upload.title}</a> */
-							/* uploadList.uploadTitle */
-							/* .attr('href', '${contextPath}/upload/detail?uploadNo=') */
-				})
+	
+	
+	$(document).ready(function(){			
+			$.ajax({
 				
-				var str = '' ;
-				
-				console.log(resData.beginPage);
-				console.log(resData.endPage);
-				console.log(resData.totalPage); 
-				console.log(resData.page); 
-				
-			
-			/* 	var str2 = 2;
-				str2.appendTo('#paging'); */
-				 /* str = $('<a>').text('2').attr('href', '${contextPath}?page=' + '2' );
-				console.log(str);
-				
-				str.appendTo('#paging');   */
-				
-		 	    if(resData.beginPage != 1){
-					str.append( $('<a>').text('◀').attr('href', '${contextPath}?page=' + resData.beginpage -1 ) );
+				type : 'get',
+				url : '${contextPath}/upload/ulist',
+				dataType: 'json',
+				data : 'pageNo=' + ${pageNo} ,
+				success: function(resData){
+					console.log(resData);
+					$('#paging').empty();
+					$.each(resData.uploadList, function( i , uploadList){
+						$('<tr>')
+						.append( $('<td>').text(uploadList.uploadBoardNo) )
+						.append( $('<td>').append( $('<a>').text(uploadList.uploadTitle).attr('href' ,'${contextPath}/upload/incrase/hit?uploadBoardNo=' + uploadList.uploadBoardNo ) ) )
+						.append( $('<td>').text(uploadList.createDate) )
+						.append( $('<td>').text(uploadList.attachCnt) )
+						.append( $('<td>').text(uploadList.ip) )
+						.append( $('<td>').text(uploadList.hit) )
+						.appendTo('#result');	
 					
-				}
-				
-			 	for(let p = resData.beginPage; p <= resData.endPage; p++){
-				 	if(p == resData.page){
-				 		$(str).append(p); 
-						console.log(p);
+					})	
+					
+					var str = '' ;	
+			 	    if(resData.beginPage != 1){
+						str += '<a href=${contextPath}/upload/list?pageNo=' + Number(resData.beginPage -1) + '>' + '◀' + '</a>';
 					}  
-					else {
-						$(str).append( $('<a>').text(p).attr('href', '${contextPath}?page=' + p ) );
-						console.log(str);
+				 	for(let p = resData.beginPage; p <= resData.endPage; p++){
+					 	if(p == resData.page){
+					 		str += '<strong>' + p + '</strong>' ;
+						}  
+						else {
+							str += '<a href=${contextPath}/upload/list?pageNo=' + p +'>'+ p + '</a>';
+						} 
 					} 
-				} 
-				
-				if(resData.endPage != resData.totalPage) {
-					str.append( $('<a>').text('▶').attr('href', '${contextPath}?page=' + resData.endPage+1 ) ) ;
-					console.log(str);
-				}    
-				console.log(str);
-				/*  let p = resData.beginPage
-				 var str2 = '';
-				 str2 = $('<a>').text('◀').attr('href', '${contextPath}?page=' + resData.beginpage -1 ) ;
-				 str2.append( $('<a>').text('▶').attr('href', '${contextPath}?page=' + resData.endPage+1 ) ); 
-				 str2.append( p  ); 
-				 str2.append( $('<a>').text(p).attr('href', '${contextPath}?page=' + p ) );
-				 console.log(str2);   */
-				 $(str).appendTo('#paging');   
-				
-				
-				
-			},
-			error: function(jqXHR){
-				alert('등록이 실패했습니다.');
-			}
+					if(resData.endPage != resData.totalPage) {
+						str += '<a href=${contextPath}/upload/list?pageNo=' + Number(resData.endPage + 1) + '>' + '▶' + '</a>';
+						console.log(str);
+					}     
+					 
+					   
+					 $('#paging').append(str);   	
+				},
+				error: function(jqXHR){
+					alert('등록이 실패했습니다.');
+				}
 		})
+		
 		
 	})
 </script>
