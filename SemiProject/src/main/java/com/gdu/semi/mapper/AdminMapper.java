@@ -21,4 +21,6 @@ public interface AdminMapper {
 	public int insertRetireUser(Map<String, Object> map);
 	public int deleteSleepUser(String id);
 	public int insertRestoreUser(String id);
+	public int insertdormantUser(String id);
+	public int insertAccessUser(String id);
 }

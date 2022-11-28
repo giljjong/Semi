@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
-	.retire_icon:hover, .unrestore_icon:hover, .restore_icon:hover {
+	.retire_icon:hover, .dormant_icon:hover, .restore_icon:hover {
 		cursor: pointer;
 	}
 </style>
@@ -28,8 +28,8 @@
 		fn_searchList();
 		fn_inputShow();
 		fn_removeUser();
+		fn_dormantUser();
 		fn_restoreUser();
-		fn_UnrestoreUser();
 		
 		$('.start_datepicker').datepicker({
 			dateFormat: 'yymmdd',  // 실제로는 yyyymmdd로 적용됨
@@ -71,8 +71,8 @@
 						.append($('<td>').html(user.userDTO.accessLogDTO.lastLoginDate))
 						.append(user.userDTO.infoModifyDate == null ? $('<td>').html('') : $('<td>').html(user.userDTO.infoModifyDate))
 						.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('') : $('<td class="sleepUser">').html(user.sleepUserDTO.sleepDate))
+						.append($('<td>').html('<a class="dormant_icon"><i class="fa-solid fa-user-check"></i></a>'))
 						.append($('<td>').html('<a class="restore_icon"><i class="fa-solid fa-user-lock"></i></a>'))
-						.append($('<td>').html('<a class="unrestore_icon"><i class="fa-solid fa-user-check"></i></a>'))
 						.append($('<td>').html('<a class="retire_icon"><i class="fa-solid fa-trash-can"></i></a>'))
 						.appendTo($('#userList'));
 						
@@ -152,8 +152,8 @@
 								.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html(user.userDTO.infoModifyDate) : $('<td class="sleepUser">').html(user.sleepUserDTO.sleepDate))
 							}
 							tr
+							.append($('<td>').html('<a class="dormant_icon"><i class="fa-solid fa-user-check"></i></a>'))
 							.append($('<td>').html('<a class="restore_icon"><i class="fa-solid fa-user-lock"></i></a>'))
-							.append($('<td>').html('<a class="unrestore_icon"><i class="fa-solid fa-user-check"></i></a>'))
 							.append($('<td>').html('<a class="retire_icon"><i class="fa-solid fa-trash-can"></i></a>'))
 							tr.appendTo($('#userList'));
 							
@@ -171,12 +171,11 @@
 		$(document).on('click', '.retire_icon', function(event){
 			id = $(this).parent().parent().children().first().next().text();
 			if(confirm(id + '회원을 삭제하시겠습니까?')){
+				
 				if($(this).parent().prev().prev().prev().hasClass('sleepUser')){
 					userType = 'SLEEP_USERS';
-					console.log('휴면');
 				} else {
 					userType = 'USERS';
-					console.log('정상');
 				}
 				
 				$.ajax({
@@ -190,51 +189,52 @@
 					}
 				});	// ajax
 				
-			} else{
-				event.preventDefault();
-				return;
-			}	// confirm	
+			};// confirm	
 		});	// event
 	}	// fn
 	
-	function fn_restoreUser(){
-		$(document).on('click', '.restore_icon', function(event){
+	function fn_dormantUser(){
+		$(document).on('click', '.dormant_icon', function(event){
 			id = $(this).parent().parent().children().first().next().text();
+			
 			if(confirm(id + '회원을 휴면 회원으로 전환 하시겠습니까?')){
+				
 				if($(this).parent().prev().hasClass('sleepUser')){
 					alert('이미 휴면 회원입니다.');
 					event.preventDefault();
 					return;
+					
 				} else {
+					
+					$.ajax({
+						type : 'post',
+						url : '${contextPath}/admin/user/dormant',
+						data : 'id=' + id,
+						dataType : 'json',
+						success : function(resData){
+							alert(resData.message);
+							fn_autoList();
+						}
+					});
+				};
+			};
+		});
+	};
+	
+	function fn_restoreUser(){
+		$(document).on('click', '.restore_icon', function(event){
+			id = $(this).parent().parent().children().first().next().text();
+			if(confirm(id + '회원을 정상 회원으로 전환 하시겠습니까?')){
+				if($(this).parent().prev().prev().hasClass('sleepUser')){
+					
 					$.ajax({
 						type : 'post',
 						url : '${contextPath}/admin/user/restore',
 						data : 'id=' + id,
 						dataType : 'json',
 						success : function(resData){
-							
-						}
-					});
-				
-				}
-			}
-			
-		}
-	}
-	
-	function fn_UnrestoreUser(){
-		$(document).on('click', '.unrestore_icon', function(event){
-			id = $(this).parent().parent().children().first().next().text();
-			if(confirm(id + '회원을 정상 회원으로 전환 하시겠습니까?')){
-				if($(this).parent().prev().hasClass('sleepUser')){
-					
-					$.ajax({
-						type : 'post',
-						url : '${contextPath}/admin/user/unrestore',
-						data : 'id=' + id,
-						dataType : 'json',
-						success : function(resData){
-							
+							alert(resData.message);
+							fn_autoList();
 						}
 					});
 					
@@ -244,11 +244,10 @@
 					event.preventDefault();
 					return;
 				
-				}
-			}
-			
-		}
-	}
+				};
+			};
+		});
+	};
 	
 	function fn_inputShow(){
 		
@@ -279,8 +278,8 @@
 </head>
 <body>
 	<div>
+		<a href="${contextPath}/admin/menu">메뉴</a>
 		<a href="${contextPath}/admin/list/board">게시판 관리</a>
-		<a href="${contextPath}/admin/list/gallery">갤러리게시판 관리</a>
 		<a href="${contextPath}/admin/list/upload">업로드게시판 관리</a>
 	</div>
 	<div>

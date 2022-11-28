@@ -144,6 +144,7 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 	
+	@Transactional
 	@Override
 	public Map<String, Object> retireUser(HttpServletRequest request) {
 		
@@ -170,6 +171,55 @@ public class AdminServiceImpl implements AdminService {
 			result.put("status", 200);
 		} else {
 			result.put("message", "회원 삭제가 실패하였습니다.");
+			result.put("status", 500);
+		}
+		
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, Object> restoreUser(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		
+		int insertResult = adminMapper.insertRestoreUser(id);
+		insertResult += adminMapper.insertAccessUser(id);
+		int deleteResult = 0;
+		
+		Map<String, Object> result = new HashMap<>();
+		if(insertResult > 0) {
+			deleteResult = adminMapper.deleteSleepUser(id);
+		}
+		
+		if(deleteResult > 0 && insertResult > 0) {
+			result.put("message", id + " 회원이 정상회원으로 변경되었습니다.");
+			result.put("status", 200);
+		} else {
+			result.put("message", "정상회원 변경이 실패하였습니다.");
+			result.put("status", 500);
+		}
+		
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, Object> dormantUser(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		
+		int insertResult = adminMapper.insertdormantUser(id);
+		int deleteResult = 0;
+		
+		Map<String, Object> result = new HashMap<>();
+		if(insertResult > 0) {
+			deleteResult = adminMapper.deleteUser(id);
+		}
+		
+		if(deleteResult > 0 && insertResult > 0) {
+			result.put("message", id + " 회원이 휴면회원으로 변경되었습니다.");
+			result.put("status", 200);
+		} else {
+			result.put("message", "휴면회원 변경이 실패하였습니다.");
 			result.put("status", 500);
 		}
 		

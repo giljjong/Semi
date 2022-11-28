@@ -12,8 +12,8 @@
 </head>
 <body>
 	<div>
-		<a href="${contextPath}/admin/list/sleep">휴면 회원 리스트</a>
-		<a href="${contextPath}/admin/list/free">자유게시판 관리</a>
+		<a href="${contextPath}/admin/menu">메뉴</a>
+		<a href="${contextPath}/admin/list/user">회원 관리</a>
 		<a href="${contextPath}/admin/list/gallery">갤러리게시판 관리</a>
 		<a href="${contextPath}/admin/list/upload">업로드게시판 관리</a>
 	</div>

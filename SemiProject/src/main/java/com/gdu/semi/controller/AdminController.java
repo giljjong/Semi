@@ -52,4 +52,16 @@ public class AdminController {
 		return adminService.retireUser(request);
 	}
 	
+	@ResponseBody
+	@PostMapping(value="/admin/user/restore", produces="application/json; charset=UTF-8")
+	public Map<String, Object> restoreUser(HttpServletRequest request) {
+		return adminService.restoreUser(request);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/admin/user/dormant", produces="application/json; charset=UTF-8")
+	public Map<String, Object> dormantUser(HttpServletRequest request) {
+		return adminService.dormantUser(request);
+	}
+	
 }
