@@ -146,17 +146,26 @@
 		 WHERE ID = #{id}
 	</delete>
 	
-	<delete id="deleteAccessLog" parameterType="String">
-		DELETE
-		  FROM AccessLogDTO
-		 WHERE ID = #{id}
-	</delete>
-	
+	<insert id="insertRetireUser" parameterType="map">
+		INSERT INTO RETIRE_USERS (USER_NO, ID, JOIN_DATE, RETIRE_DATE)
+			(SELECT USER_NO, ID, JOIN_DATE, SYSDATE
+			     FROM ${userType}
+			    WHERE ID = #{id})
+	</insert>
+
 	<delete id="deleteSleepUser" parameterType="String">
 		DELETE
 		  FROM SLEEP_USERS
 		 WHERE ID = #{id}
 	</delete>
+	
+	<!-- 유저 복구 -->
+	<insert id="insertRestoreUser" parameterType="String">
+		INSERT INTO USERS(USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE)
+         (SELECT USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE
+            FROM SLEEP_USERS
+           WHERE ID = #{id})
+	</insert>
 	
 	
 </mapper>

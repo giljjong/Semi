@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.gdu.semi.domain.AllUserDTO;
@@ -138,6 +139,38 @@ public class AdminServiceImpl implements AdminService {
 			result.put("sleepUserCnt", sleepUserCnt);
 			result.put("paging", pageUtil.getPaging(path));
 			result.put("status", 200);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> retireUser(HttpServletRequest request) {
+		
+		String id = request.getParameter("id");
+		String userType = request.getParameter("userType");
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userType", userType);
+		map.put("id", id);
+		
+		int insertResult = adminMapper.insertRetireUser(map);
+		int deleteResult = 0;
+		
+		if(userType.equals("USERS")) {
+			deleteResult = adminMapper.deleteUser(id);
+		} else {
+			deleteResult = adminMapper.deleteSleepUser(id);
+		}
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if(deleteResult > 0 && insertResult > 0) {
+			result.put("message", id + " 회원이 삭제되었습니다.");
+			result.put("status", 200);
+		} else {
+			result.put("message", "회원 삭제가 실패하였습니다.");
+			result.put("status", 500);
 		}
 		
 		return result;

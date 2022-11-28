@@ -1,6 +1,5 @@
 package com.gdu.semi.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.semi.service.AdminService;
@@ -42,9 +42,14 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/list/board")
-	public String boardList(HttpServletRequest request, Model model) {
+	public String boardList(HttpServletRequest request) {
 		return "admin/list/board";
 	}
-
+	
+	@ResponseBody
+	@PostMapping(value="/admin/user/retire", produces="application/json; charset=UTF-8")
+	public Map<String, Object> retireUser(HttpServletRequest request) {
+		return adminService.retireUser(request);
+	}
 	
 }

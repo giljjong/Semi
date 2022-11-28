@@ -14,6 +14,7 @@
 		<typeAlias type="com.gdu.semi.domain.UserDTO" alias="UserDTO" />
 		<typeAlias type="com.gdu.semi.domain.SleepUserDTO" alias="SleepUserDTO" />
 		<typeAlias type="com.gdu.semi.domain.AccessLogDTO" alias="AccessLogDTO" />
+		<typeAlias type="com.gdu.semi.domain.RetireUserDTO" alias="RetireUserDTO" />
 		<typeAlias type="com.gdu.semi.domain.AllUserDTO" alias="AllUserDTO" />
 		<typeAlias type="com.gdu.semi.domain.GalleryBoardDTO" alias="GalleryBoardDTO" />
 		<typeAlias type="com.gdu.semi.domain.LovesDTO" alias="LovesDTO" />
