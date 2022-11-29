@@ -22,5 +22,6 @@
 		<typeAlias type="com.gdu.semi.domain.CommentsDTO" alias="CommentsDTO" />
 		<typeAlias type="com.gdu.semi.domain.AttachDTO" alias="AttachDTO" />
 		<typeAlias type="com.gdu.semi.domain.UploadBoardDTO" alias="UploadBoardDTO" />
+		<typeAlias type="com.gdu.semi.domain.BoardDTO" alias="BoardDTO" />
 	</typeAliases>
 </configuration>

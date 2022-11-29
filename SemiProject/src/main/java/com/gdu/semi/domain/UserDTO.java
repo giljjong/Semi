@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class UserDTO {
+	private int rn;
 	private int userNo;
 	private String id;
 	private String pw;

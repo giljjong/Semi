@@ -1,7 +1,11 @@
+<%@page import="java.util.Optional"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
+<% 	Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+	int p = Integer.parseInt(opt.orElse("1")); 
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
-	.retire_icon:hover, .dormant_icon:hover, .restore_icon:hover {
+	.retire_icon:hover, .dormant_icon:hover, .restore_icon:hover, .user_info:hover {
 		cursor: pointer;
 	}
 </style>
@@ -30,6 +34,7 @@
 		fn_removeUser();
 		fn_dormantUser();
 		fn_restoreUser();
+		fn_infoUser();
 		
 		$('.start_datepicker').datepicker({
 			dateFormat: 'yymmdd',  // 실제로는 yyyymmdd로 적용됨
@@ -48,10 +53,12 @@
 		$.ajax({
 			type : 'get',
 			url : '${contextPath}/admin/list/allUsers',
+			data : 'page=' + <%=p%>,
 			dataType : 'json',
 			success : function(resData) {
 				
 				$('<span>').html('총 인원 수 : ' + resData.totalRecord)
+				.append($('<span>').html('정상 회원 : ' + resData.userCnt))
 				.append($('<span>').html('휴면 회원 : ' + resData.sleepUserCnt))
 				.appendTo('#span_cnt');
 				
@@ -62,8 +69,8 @@
 					$.each(resData.users, function(i, user){
 
 						$('<tr>')
-						.append($('<td>').html(user.userDTO.userNo))
-						.append($('<td>').html(user.userDTO.id))
+						.append($('<td>').html(user.rn))
+						.append($('<td>').html($('<span class="user_info">').text(user.userDTO.id)))
 						.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('정상회원') : $('<td>').html('휴면회원'))
 						.append($('<td>').html(user.userDTO.point))
 						.append(user.userDTO.snsType == null ? $('<td>').html('자체 회원') : $('<td>').html('Naver 가입'))
@@ -136,8 +143,8 @@
 
 							tr
 							.append($('<input type="hidden">').val())
-							.append($('<td>').html(user.userDTO.userNo))
-							.append($('<td>').html(user.userDTO.id))
+							.append($('<td>').html(user.rn))
+							.append($('<td>').html($('<span class="info_user">').text(user.userDTO.id)))
 							.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('정상회원') : $('<td>').html('휴면회원'))
 							.append($('<td>').html(user.userDTO.point))
 							.append(user.userDTO.snsType == null ? $('<td>').html('자체 회원') : $('<td>').html('Naver 가입'))
@@ -249,6 +256,13 @@
 		});
 	};
 	
+	function fn_infoUser(){
+		$(document).on('click', '.user_info', function(event){
+			var id = $(this).text();
+			location.href="${contextPath}/admin/user/detail?id=" + id;
+		})
+	};
+	
 	function fn_inputShow(){
 		
 		$('#area2').hide();
@@ -296,6 +310,7 @@
 				<option id="sleepOpt" value="SLEEP_DATE">휴면일자</option>
 				<option value="POINT">포인트</option>
 			</select>
+			<input type="hidden" name="page" value="<%=p%>">
 			<span id="area1">
 				<input type="text" id="query" name="query" class="input">
 			</span>

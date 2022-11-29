@@ -6,6 +6,7 @@
 
 <mapper namespace="com.gdu.semi.mapper.AdminMapper">
 
+	<!-- 유저 -->
 	<resultMap type="AccessLogDTO" id="AccessLogMap">
 		<result column="ACCESS_LOG_NO" property="accessLogNo" />
 		<result column="ID" property="id" />
@@ -34,6 +35,7 @@
 		<result column="POINT" property="point" />
 	</resultMap>
 	<resultMap type="UserDTO" id="UserMap">
+		<result column="RN" property="rn" />
 		<result column="USER_NO" property="userNo" />
 		<result column="ID" property="id" />
 		<result column="PW" property="pw" />
@@ -63,10 +65,48 @@
 		<collection resultMap="SleepUserMap" property="sleepUserDTO"></collection>
 	</resultMap>
 	
+	<!-- 게시판 -->
+	<resultMap type="AttachDTO" id="AttachMap">
+		<result column="ATTACH_NO" property="attachNo" />
+		<result column="PATH" property="path" />
+		<result column="ORIGIN" property="origin" />
+		<result column="FILESYSTEM" property="filesystem" />
+		<result column="DOWNLOAD_CNT" property="downloadCnt" />
+		<result column="UPLOAD_BOARD_NO" property="uploadBoardNo" />
+	</resultMap>
+	<resultMap type="UploadBoardDTO" id="UploadBoardMap">
+		<result column="UPLOAD_BOARD_NO" property="uploadBoardNo" />
+		<result column="ID" property="id" />
+		<result column="UPLOAD_TITLE" property="uploadTitle" />
+		<result column="UPLOAD_CONTENT" property="uploadContent" />
+		<result column="IP" property="ip" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="MODIFY_DATE" property="modifyDate" />
+		<result column="HIT" property="hit" />
+		<collection resultMap="AttachMap" property="attachDTO"></collection>
+	</resultMap>
+	<resultMap type="BoardDTO" id="BoardMap">
+		<result column="RN" property="rn" />
+		<result column="FREE_BOARD_NO" property="freeBoardNo" />
+		<result column="GALLERY_BOARD_NO" property="galleryBoardNo" />
+		<result column="UPLOAD_BOARD_NO" property="uploadBoardNo" />
+		<result column="ID" property="id" />
+		<result column="TITLE" property="title" />
+		<result column="CONTENT" property="content" />
+		<result column="IP" property="ip" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="MODIFY_DATE" property="modifyDate" />
+		<result column="STATE" property="state" />
+		<result column="DEPTH" property="depth" />
+		<result column="GROUP_NO" property="groupNo" />
+		<result column="GROUP_ORDER" property="groupOrder" />
+		<result column="HIT" property="hit" />
+	</resultMap>
+	
 	<!-- 전체조회 -->
 	<select id="selectAllUserList" parameterType="Map" resultMap="AllUserMap">
 		SELECT D.RN, D.USER_NO, D.ID, D.PW, D.NAME, D.GENDER, D.EMAIL, D.BIRTHYEAR, D.BIRTHDAY, D.SNS_TYPE, D.JOIN_DATE, D.INFO_MODIFY_DATE, D.LAST_LOGIN_DATE, D.SLEEP_DATE, D.POINT
-  		  FROM (SELECT ROWNUM AS RN, C.USER_NO, C.ID, C.PW, C.NAME, C.GENDER, C.EMAIL, C.BIRTHYEAR, C.BIRTHDAY, C.SNS_TYPE, C.JOIN_DATE, C.INFO_MODIFY_DATE, C.LAST_LOGIN_DATE, C.SLEEP_DATE, C.POINT
+  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY JOIN_DATE DESC) AS RN, C.USER_NO, C.ID, C.PW, C.NAME, C.GENDER, C.EMAIL, C.BIRTHYEAR, C.BIRTHDAY, C.SNS_TYPE, C.JOIN_DATE, C.INFO_MODIFY_DATE, C.LAST_LOGIN_DATE, C.SLEEP_DATE, C.POINT
           		  FROM (SELECT U.USER_NO, U.ID, U.PW, U.NAME, U.GENDER, U.EMAIL, U.BIRTHYEAR, U.BIRTHDAY, U.SNS_TYPE, U.JOIN_DATE, U.INFO_MODIFY_DATE, A.LAST_LOGIN_DATE, NULL SLEEP_DATE, U.POINT
                   		  FROM USERS U LEFT OUTER JOIN ACCESS_LOG A
                     		ON U.ID = A.ID
@@ -96,7 +136,7 @@
                   		  	ON U.ID = A.ID
                			 ORDER BY U.JOIN_DATE DESC) B) C
 		<where>
-		  <if test="true">C.RN BETWEEN #{begin} AND #{end}</if>
+		  C.RN BETWEEN #{begin} AND #{end}
 		  <if test="column=='ID'">AND C.${column} LIKE '%' || #{query} || '%'</if>
 		  <if test="column=='JOIN_DATE'">AND C.${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
 		  <if test="column=='POINT'">AND C.${column} BETWEEN #{first} AND #{last}</if>
@@ -181,5 +221,178 @@
               ON U.ID = A.ID
            WHERE U.ID = #{id})
 	</insert>
+	
+	<!-- 전체 게시판 조회 -->
+	<select id="selectAllBoardByQuery" parameterType="map" resultMap="BoardMap">
+		SELECT B.RN, B.FREE_BOARD_NO, B.GALLERY_BOARD_NO, B.UPLOAD_BOARD_NO, B.ID, B.TITLE, B.CONTENT, B.IP, B.CREATE_DATE, B.MODIFY_DATE, B.STATE, B.DEPTH, B.GROUP_NO, B.GROUP_ORDER, B.HIT
+  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC, CREATE_DATE DESC) AS RN, A.FREE_BOARD_NO, A.GALLERY_BOARD_NO, A.UPLOAD_BOARD_NO, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER, A.HIT
+          		  FROM((SELECT FREE_BOARD_NO, 0 GALLERY_BOARD_NO, 0 UPLOAD_BOARD_NO, ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER, NULL HIT
+                  		  FROM FREE_BOARD
+      
+                		UNION
+    
+                		SELECT 0 FREE_BOARD_NO, GALLERY_BOARD_NO, 0 UPLOAD_BOARD_NO, ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+                  		  FROM GALLERY_BOARD)
+      
+                		UNION
+    
+                		SELECT 0 FREE_BOARD_NO, 0 GALLERY_BOARD_NO, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+                  		  FROM UPLOAD_BOARD) A
+		         <where>
+			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+			 		<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+				  	<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		         </where>
+		         ) B
+	 	WHERE B.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectAllBoardCountByQuery" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+  		  FROM((SELECT ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER, NULL HIT
+          		  FROM FREE_BOARD
+      
+        		UNION
+    
+        		SELECT ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+          		  FROM GALLERY_BOARD)
+      
+        		UNION
+    
+        		SELECT ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+          		  FROM UPLOAD_BOARD) A
+		<where>
+	 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+ 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+        </where>
+	</select>
+	
+	<!-- 개별 게시판 검색 -->
+	<select id="selectGalleryUploadCountByQuery" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+  		  FROM ${board}
+		<where>
+	 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+ 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+        </where>
+	</select>
+	
+	<select id="selectFreeCountByQuery" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+  		  FROM FREE_BOARD
+		<where>
+	 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+ 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+        </where>
+	</select>
+	
+	<select id="selectFreeBoardByQuery" parameterType="Map" resultType="BoardDTO">
+		SELECT A.RN, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC) AS RN, ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER
+          		  FROM FREE_BOARD
+	          	<where>
+			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+	        	</where>
+          		  ) A
+       	 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectGalleryBoardByQuery" parameterType="Map" resultType="BoardDTO">
+		SELECT A.RN, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.HIT
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GALLERY_BOARD_NO DESC) AS RN, ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT
+          		  FROM GALLERY_BOARD
+		         <where>
+			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		        </where>
+          		  ) A
+         WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectUploadBoardByQuery" parameterType="Map" resultType="BoardDTO">
+		SELECT A.RN, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.HIT
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_BOARD_NO DESC) AS RN, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT
+          		  FROM UPLOAD_BOARD
+		         <where>
+			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		        </where>
+          		  ) A
+        WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="deleteFreeBoard" parameterType="map">
+		DELETE
+		  FROM FREE_BOARD
+		<where>
+			AND FREE_BOARD_NO = #{boardNo}
+	  		<if test="id != 'null'">AND ID = #{id}</if>
+	  </where>
+	</delete>
+	
+	<delete id="deleteGalleryBoard" parameterType="map">
+		DELETE
+		  FROM GALLERY_BOARD
+	   <where>
+			AND GALLERY_BOARD_NO = #{boardNo}
+	  		<if test="id != 'null'">AND ID = #{id}</if>
+	  </where>
+	</delete>
+	
+	<delete id="deleteUploadBoard" parameterType="map">
+		DELETE
+		  FROM UPLOAD_BOARD
+		<where>
+			AND UPLOAD_BOARD_NO = #{boardNo}
+		  	<if test="id != 'null'">AND ID = #{id}</if>
+		</where>
+	</delete>
+	
+	<!-- 유저 Detail 게시물 검색 -->
+	
+	<select id="selectAllBoardById" parameterType="Map" resultMap="BoardMap">
+		SELECT B.RN, B.FREE_BOARD_NO, B.GALLERY_BOARD_NO, B.UPLOAD_BOARD_NO, B.ID, B.TITLE, B.CONTENT, B.IP, B.CREATE_DATE, B.MODIFY_DATE, B.STATE, B.DEPTH, B.GROUP_NO, B.GROUP_ORDER, B.HIT
+  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC, CREATE_DATE DESC) AS RN, A.FREE_BOARD_NO, A.GALLERY_BOARD_NO, A.UPLOAD_BOARD_NO, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER, A.HIT
+          		  FROM((SELECT FREE_BOARD_NO, 0 GALLERY_BOARD_NO, 0 UPLOAD_BOARD_NO, ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER, NULL HIT
+                  		  FROM FREE_BOARD
+      
+                		UNION
+    
+                		SELECT 0 FREE_BOARD_NO, GALLERY_BOARD_NO, 0 UPLOAD_BOARD_NO, ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+                  		  FROM GALLERY_BOARD)
+      
+                		UNION
+    
+                		SELECT 0 FREE_BOARD_NO, 0 GALLERY_BOARD_NO, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+                  		  FROM UPLOAD_BOARD) A
+		        WHERE ID = #{id}
+		         ) B
+	 	WHERE B.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectAllBoardCountById" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+  		  FROM((SELECT ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER, NULL HIT
+          		  FROM FREE_BOARD
+      
+        		UNION
+    
+        		SELECT ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+          		  FROM GALLERY_BOARD)
+      
+        		UNION
+    
+        		SELECT ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
+          		  FROM UPLOAD_BOARD) A
+		 WHERE ID = #{id}
+	</select>
 	
 </mapper>

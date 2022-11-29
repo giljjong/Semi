@@ -18,4 +18,5 @@ public class UploadBoardDTO {
 	private Date createDate;
 	private Date modifyDate;
 	private int hit;
+	private AttachDTO attachDTO;
 }

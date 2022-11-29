@@ -78,4 +78,45 @@ public class PageUtil {
 		return sb.toString();
 
 	}
+	
+	public String getSearchPaging(String path) {
+		StringBuilder sb = new StringBuilder();
+		
+		if(path.contains("?")) {
+			if(beginPage != 1) {
+				sb.append("<a href=\"" + path + "&page=" + (beginPage-1) + "\" class=\"arrow\">◀</a>");
+			}
+			
+			for(int p = beginPage; p <= endPage; p++) {
+				if(p == page) {
+					sb.append("<strong>"+ p + "</strong>");
+				} else {
+					sb.append("<a href=\"" + path + "&page=" + p + "\" class=\"pageNum\">" +p + "</a>");
+				}
+			}
+			
+			if(endPage != totalPage) {
+				sb.append("<a href=\"" + path + "&page=" + (endPage+1) + "\" class=\"arrow\">▶</a>");
+			}
+		} else {
+			if(beginPage != 1) {
+				sb.append("<a href=\"" + path + "?page=" + (beginPage-1) + "\" class=\"arrow\">◀</a>");
+			}
+			
+			for(int p = beginPage; p <= endPage; p++) {
+				if(p == page) {
+					sb.append("<strong>"+ p + "</strong>");
+				} else {
+					sb.append("<a href=\"" + path + "?page=" + p + "\" class=\"pageNum\">" +p + "</a>");
+				}
+			}
+			
+			if(endPage != totalPage) {
+				sb.append("<a href=\"" + path + "?page=" + (endPage+1) + "\" class=\"arrow\">▶</a>");
+			}
+		}
+		
+		return sb.toString();
+		
+	}
 }

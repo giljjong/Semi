@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.semi.domain.AllUserDTO;
+import com.gdu.semi.domain.BoardDTO;
 import com.gdu.semi.domain.RetireUserDTO;
 import com.gdu.semi.domain.UserDTO;
 
@@ -23,4 +24,17 @@ public interface AdminMapper {
 	public int insertRestoreUser(String id);
 	public int insertdormantUser(String id);
 	public int insertAccessUser(String id);
+	public List<BoardDTO> selectAllBoardByQuery(Map<String, Object> map);
+	public List<BoardDTO> selectAllBoardById(Map<String, Object> map);
+	public int selectAllBoardCountByQuery(Map<String, Object> map);
+	public int selectAllBoardCountById(String id);
+	public int selectGalleryUploadCountByQuery(Map<String, Object> map);
+	public int selectFreeCountByQuery(Map<String, Object> map);
+	public List<BoardDTO> selectFreeBoardByQuery(Map<String, Object> map);
+	public List<BoardDTO> selectGalleryBoardByQuery(Map<String, Object> map);
+	public List<BoardDTO> selectUploadBoardByQuery(Map<String, Object> map);
+	public int deleteFreeBoard(Map<String, Object> map);
+	public int deleteGalleryBoard(Map<String, Object> map);
+	public int deleteUploadBoard(Map<String, Object> map);
+	
 }
