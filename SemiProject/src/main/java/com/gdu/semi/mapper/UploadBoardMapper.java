@@ -7,18 +7,21 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.semi.domain.AttachDTO;
 import com.gdu.semi.domain.UploadBoardDTO;
-import com.gdu.semi.domain.UserDTO;
 
 @Mapper
 public interface UploadBoardMapper {
 	public int selectUploadListCount();
-//	public List<UploadBoardDTO> selectUploadList();
 	public List<UploadBoardDTO> selectUploadListByMap( Map<String, Object> map );
 	public int updateHit(int uploadBoardNo);
 	
+	public int selectFindUploadCount(Map<String, Object> map);
+	public List<UploadBoardDTO> selectFindUploadList(Map<String, Object> map);
+	
 	public int insertUpload(UploadBoardDTO upload);
 	public int insertAttach(AttachDTO attach);
-	public int updatePoint(String id);
+	
+	public int updateIncreasePoint(String id);
+	public int updateDownloadPoint(String id);
 	
 	public UploadBoardDTO selectUploadByNo(int uploadBoardNo);
 	public List<AttachDTO> selectAttachList(int uploadBoardNo);

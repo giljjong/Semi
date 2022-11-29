@@ -8,26 +8,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
+<style>
+	.blind {
+		display: none;
+	}
+</style>
+
 <script>
 	$(function(){
-		$('#btn_upload_edit').click(function(){
-			$('#frm_upload').attr('action', '${contextPath}/upload/edit?uploadBoardNo=${uploadBoardNo}');
-			$('#frm_upload').submit();
-		});
-		
-	/* 	$('#btn_upload_remove').click(function(){
-			if(confirm('첨부된 모든 파일이 삭제됩니다. 삭제하시겠습니까?')){
-				$('#frm_upload').attr('action', '${contextPath}/upload/remove');
-				$('#frm_upload').submit();
-			}
-		}); */
-		
-		$('#btn_upload_list').click(function(){
-			location.href='${contextPath}/upload/list';
-		});
+		fn_upload_list();
+		fn_upload_edit();
+		fn_swtichDownloadList();
+		fn_editList();
+		fn_uploadRemove();
 	})
 	
-	$(document).ready(function(){
+	function fn_editList(){
 		$.ajax({
 			type : 'GET',
 			url : '${contextPath}/upload/detail/ulist?uploadBoardNo=${uploadBoardNo}' ,
@@ -49,28 +45,30 @@
 					 .appendTo('#attachList');
 				 })
 				 
-				
-				 $('<a>')
-				 .text('모두 다운로드').attr('href', '${contextPath}/upload/downloadAll?uploadBoardNo=' + resData.upload.uploadBoardNo)
-				 .appendTo('#allDownload'); 
-				
+				if(resData.upload.id == "admin"){
+					 $('<a>')
+					 .text('모두 다운로드').attr('href', '${contextPath}/upload/downloadAll?uploadBoardNo=' + resData.upload.uploadBoardNo)
+					 .appendTo('#allDownload'); 					
+				}
 				  
 			},
 			error : function(jqXHR){
 				alert('상세보기 실패');
 			}
-		})
-		
-	  $('#btn_upload_remove').click(function(){
+			
+		}) //리스트 ajax	
+	}
+	
+	function fn_uploadRemove(){
+		$('#btn_upload_remove').click(function(){
 			if(confirm('첨부된 모든 파일이 삭제됩니다. 삭제하시겠습니까?')){
-				console.log(${uploadBoardNo});
 				$.ajax({
 					type : 'POST',
 					url : '${contextPath}/upload/remove',
 					data : 'uploadBoardNo=' + ${uploadBoardNo} ,
 					success : function (resData){
 						alert('삭제가 성공했습니다.');
-						location.href='${contextPath}/upload/list'
+						location.href="${contextPath}/upload/list";
 					}, 
 					error : function (jqXHR){
 						alert('삭제가 실패했습니다.');
@@ -78,8 +76,26 @@
 					}
 				})
 			}
+	   	}); // 삭제 
+	}
+	function fn_swtichDownloadList(){
+		$('#btn_download_list').click(function(){
+				$('#download_area').toggleClass('blind');				
 		});
-	})
+	}
+	
+	function fn_upload_edit(){
+		$('#btn_upload_edit').click(function(){
+			$('#frm_upload').attr('action', '${contextPath}/upload/edit?uploadBoardNo=${uploadBoardNo}');
+			$('#frm_upload').submit();
+		});
+	}
+	
+	function fn_upload_list(){
+		$('#btn_upload_list').click(function(){
+			location.href='${contextPath}/upload/list';
+		});
+	}	
 </script>
 </head>
 <body>
@@ -98,17 +114,10 @@
 	
 	<hr>
 	
-	<div>
 		<h3>첨부 다운로드</h3>
+		<input type="button" value="다운로드 목록" id="btn_download_list">
+		<div id="download_area" class="blind">
 		<div id ='attachList'></div>
-	<%-- 	<c:forEach items= "${attachList}" var="attach">
-			<div>
-				<a href="${contextPath}/upload/download?attachNo=${attach.attachNo}">${attach.origin}</a>
-			</div>
-		</c:forEach> 
-		<div id = "allDownload">
-			<a href="${contextPath}/upload/downloadAll?uploadBoardNo= }">모두 다운로드</a>
-		</div>  --%>
 		<div id = "allDownload"></div>
 	</div>
 </body>

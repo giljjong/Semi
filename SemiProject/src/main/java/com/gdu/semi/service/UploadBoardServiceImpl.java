@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -47,13 +48,6 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	@Override
 	public ResponseEntity<Object> getUpLoadList(int pageNo) {
 		
-//		List<UploadBoardDTO> uploadList = uploadBoardMapper.selectUploadList();
-		
-//	HttpHeaders header = new HttpHeaders();
-//		header.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-//		Map<String, Object> result = new HashMap<>();
-//		result.put("uploadList", uploadList);	
-		
 		int page = pageNo ;
 		int totalRecord = uploadBoardMapper.selectUploadListCount();
 		pageUtil.setPageUtil(page, totalRecord);
@@ -72,6 +66,46 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		result.put("page", pageUtil.getPage());		
 		
 		return new ResponseEntity<Object>(result , HttpStatus.OK) ;
+	}
+	
+	@Override
+	public ResponseEntity<Object> getFindUploadList(HttpServletRequest request) {
+		Optional<String> opt = Optional.ofNullable(request.getParameter("pageNo"));
+		int pageNo = Integer.parseInt(opt.orElse("1"));
+		
+		String column = request.getParameter("column");
+		String query = request.getParameter("query");
+		
+		Map<String, Object> count = new HashMap<>();
+		count.put("column", column);
+		count.put("query", query);
+		
+		int totalRecord = uploadBoardMapper.selectFindUploadCount(count);
+		pageUtil.setPageUtil(pageNo, totalRecord);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		count.put("column", column);
+		count.put("query", query);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("uploadList", uploadBoardMapper.selectFindUploadList(map));
+		result.put("beginNo", totalRecord - (pageNo - 1) * pageUtil.getRecordPerPage());
+		result.put("beginPage", pageUtil.getBeginPage());
+		result.put("endPage", pageUtil.getEndPage());
+		result.put("totalPage", pageUtil.getTotalPage());
+		result.put("page", pageUtil.getPage());
+		
+		String path = null;
+		switch(column) {
+		case "UPLOAD_TITLE":
+		case "ID":
+			path = request.getContextPath() + "/upload/search?column=" + column + "&query=" + query;
+			break;
+		}
+		
+		return new ResponseEntity<Object>(map,HttpStatus.OK);
 	}
 	
 	
@@ -101,13 +135,6 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	
 		
 		int attachResult = 0;
-		
-//		if(uploadResult > 0 && attachResult > 0) {
-//			System.out.println(uploadResult);
-//			System.out.println(attachResult);
-//			int result = uploadBoardMapper.updatePoint(id);
-//			System.out.println("포인트 적립 성공" + result);
-//		}
 		
 		if(files.get(0).getSize() == 0) {
 			attachResult = 1;
@@ -149,35 +176,20 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 			}
 		}
 		
-		
-		ResponseEntity<Object> entity = null;
-		if(uploadResult > 0 && attachResult == files.size()) {
-			entity = new ResponseEntity<Object>(HttpStatus.OK);  // $.ajax()의 success에서 처리
-		} else {
-			entity = new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);  // $.ajax()의 error에서 처리
+		if(uploadResult > 0 && attachResult > 1) {
+			System.out.println(uploadResult);
+			System.out.println(attachResult);
+			int result = uploadBoardMapper.updateIncreasePoint(id);
+			System.out.println("포인트 적립 성공" + result);
 		}
 		
 		
-//		try {
-//			response.setContentType("text/html; charset=UTF-8");
-//			PrintWriter out = response.getWriter();
-//			
-//			if(uploadResult > 0 && attachResult == files.size()) {
-//				out.println("<script>");
-//				out.println("alert('업로드 되었습니다.');");
-//				out.println("location.href='" + multipartreRequest.getContextPath() + "/upload/list'");
-//				out.println("</script>");
-//			} else {
-//				out.println("<script>");
-//				out.println("alert('업로드 실패했습니다.');");
-//				out.println("history.back();");
-//				out.println("</script>");
-//			}
-//			out.close();
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		ResponseEntity<Object> entity = null;
+		if(uploadResult > 0 && attachResult == files.size()) {
+			entity = new ResponseEntity<Object>(HttpStatus.OK); 
+		} else {
+			entity = new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);  
+		}
 		
 		return entity;
 	}
@@ -190,20 +202,16 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 	
 	@Override
 	public ResponseEntity<Object> getUploadByNo(int uploadBoardNo) {
-//		model.addAttribute("upload", uploadBoardMapper.selectUploadByNo(uploadBoardNo));
-//		model.addAttribute("attachList", uploadBoardMapper.selectAttachList(uploadBoardNo) );
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("upload", uploadBoardMapper.selectUploadByNo(uploadBoardNo));
 		map.put("attachList", uploadBoardMapper.selectAttachList(uploadBoardNo));
 				
-		
 		return new ResponseEntity<Object> (map , HttpStatus.OK);
 	}
 	
 	@Override
 	public ResponseEntity<Resource> download(String userAgent, int attachNo) {
-		
 		AttachDTO attach = uploadBoardMapper.selectAttachByNo(attachNo);
 		File file = new File(attach.getPath(), attach.getFilesystem());
 		
@@ -230,6 +238,8 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+//		uploadBoardMapper.updateDownloadPoint(id);
 		
 		HttpHeaders header = new HttpHeaders();
 		header.add("Content-Disposition", "attachment; filename=" + origin);
@@ -279,6 +289,7 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 					fin.close();
 					
 					uploadBoardMapper.updateDownloadCnt(attach.getAttachNo());
+	
 				}
 				
 				zout.close();
@@ -302,6 +313,13 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		header.add("Content-Length", file.length() + "");
 		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
+	}
+	
+	@Override
+	public void downloadPoint(HttpServletRequest request) {
+		String id = "admin";
+		uploadBoardMapper.updateDownloadPoint(id);
+		
 	}
 	
 	@Transactional
@@ -371,56 +389,50 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		}
 		
 		return entity;
-		
-//		try {
-//			response.setContentType("text/html; charset=UTF-8");
-//			PrintWriter out = response.getWriter();
-//			
-//			if(uploadResult > 0 && attachResult == files.size()) {
-//				System.out.println("업로드 넘버 : " + uploadBoardNo );
-//				out.println("<script>");
-//				out.println("alert('수정되었습니다.')");
-//				out.println("location.href='" + mulRequest.getContextPath() + "/upload/detail?uploadBoardNo=" + uploadBoardNo + "'");
-//				out.println("</script>");
-//			} else {
-//				out.println("<script>");
-//				out.println("alert('수정이 실패했습니다.')");
-//				out.println("history.back();");
-//				out.println("</script>");
-//			}
-//			out.close();
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		
-		
 	}
 	
+//	@Override
+//	public void removeAttachByAttachNo(int attachNo) {
+//		
+//		AttachDTO attach = uploadBoardMapper.selectAttachByNo(attachNo);
+//		
+//		int result = uploadBoardMapper.deleteAttach(attachNo);
+//		
+//		if(result > 0) {
+//			File file = new File(attach.getPath(), attach.getFilesystem());
+//			
+//			if(file.exists()) {
+//				file.delete();
+//			}
+//		}
+//	}
+	
 	@Override
-	public void removeAttachByAttachNo(int attachNo) {
+	public ResponseEntity<Object> removeAttachByAttachNo(int attachNo) {
 		
 		AttachDTO attach = uploadBoardMapper.selectAttachByNo(attachNo);
-		
 		int result = uploadBoardMapper.deleteAttach(attachNo);
 		
-		if(result > 0) {
+		ResponseEntity<Object> entity = null;
+		if (result > 0) {
 			File file = new File(attach.getPath(), attach.getFilesystem());
-			
 			if(file.exists()) {
 				file.delete();
 			}
+			entity = new ResponseEntity<Object>(HttpStatus.OK);
+		} else {
+			entity = new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		return entity;
 	}
 	
 	@Override
 	public ResponseEntity<Object> removeUpload(HttpServletRequest request, HttpServletResponse response) {
 		
 		int uploadBoardNo = Integer.parseInt(request.getParameter("uploadBoardNo"));
-		
 		List<AttachDTO> attachList = uploadBoardMapper.selectAttachList(uploadBoardNo);
-		
 		int result = uploadBoardMapper.deleteUpload(uploadBoardNo);
+		ResponseEntity<Object> entity = null;
 		
 		if(result > 0) {
 			if(attachList != null && attachList.isEmpty() == false ) {
@@ -430,41 +442,12 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 						file.delete();
 					}
 				}
-				
 			}
-		}
-		
-		
-		ResponseEntity<Object> entity = null;
-		
-		if(result > 0 ) {
 			entity = new ResponseEntity<Object>(HttpStatus.OK);
 		} else {
 			entity = new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return entity;
-		
-		
-//		try {
-//			response.setContentType("text/html; charset=UTF-8");
-//			PrintWriter out = response.getWriter();
-//			
-//			if(result > 0 ) {
-//				out.println("<script>");
-//				out.println("alert('삭제 되었습니다.');");
-//				out.println("location.href='" + request.getContextPath() + "/upload/list'");
-//				out.println("</script>");
-//			} else {
-//				out.println("<script>");
-//				out.println("alert('삭제 실패했습니다.');");
-//				out.println("history.back();");
-//				out.println("</script>");
-//			}
-//			out.close();
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 }

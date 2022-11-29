@@ -1,5 +1,7 @@
 package com.gdu.semi.service;
 
+import java.net.http.HttpRequest;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public interface UploadBoardService {
 	
 	public ResponseEntity<Object> getUpLoadList(int pageNo);
+	public ResponseEntity<Object> getFindUploadList(HttpServletRequest request);
 	public ResponseEntity<Object> save(MultipartHttpServletRequest multipartHttpServletRequest, HttpServletResponse response);
 	
 	public int increaseHit(int uploadBoardNo);
@@ -17,8 +20,11 @@ public interface UploadBoardService {
 	
 	public ResponseEntity<Resource> download(String userAgent, int attachNo);
 	public ResponseEntity<Resource> downloadAll(String userAgent, int uploadBoardNo);
+	public void downloadPoint(HttpServletRequest request);
+	
 	public ResponseEntity<Object> modifyUpload(MultipartHttpServletRequest mulRequest, HttpServletResponse response);
 	
-	public void removeAttachByAttachNo(int attachNo);
+	public ResponseEntity<Object> removeAttachByAttachNo(int attachNo);
+	
 	public ResponseEntity<Object> removeUpload(HttpServletRequest request,HttpServletResponse response );
 }

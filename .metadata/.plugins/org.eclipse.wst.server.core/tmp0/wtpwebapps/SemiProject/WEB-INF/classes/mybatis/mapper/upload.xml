@@ -11,11 +11,6 @@
 			FROM UPLOAD_BOARD
 	</select>
 	
-	<!-- <select id="selectUploadList" resultType="UploadBoardDTO">
-		SELECT U.UPLOAD_BOARD_NO, U.ID, U.UPLOAD_TITLE, U.UPLOAD_CONTENT, U.IP, U.CREATE_DATE, U.MODIFY_DATE, U.HIT,
-		(SELECT COUNT(*) FROM ATTACH A WHERE U.UPLOAD_BOARD_NO = A.UPLOAD_BOARD_NO) AS ATTACH_CNT
-		FROM UPLOAD_BOARD U
-	</select> -->
 	
 	<select id="selectUploadListByMap" parameterType="Map" resultType="UploadBoardDTO">
 		SELECT ROW_NUM, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT, ATTACH_CNT
@@ -25,11 +20,33 @@
         WHERE ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
+	<select id="selectFindUploadCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+			FROM UPLOAD_BOARD U
+		<where>
+			<if test="column=='UPLOAD_TITLE' or  column='ID' " >${column} LIKE '%' || #{query} || '%'</if>
+		</where>
+	</select>
+	
+	<select id="selectFindUploadList" parameterType="Map" resultType="UploadBoardDTO">
+		SELECT ROW_NUM, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT, ATTACH_CNT
+			FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_BOARD_NO DESC) AS ROW_NUM, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE, UPLOAD_CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT,
+				(SELECT COUNT(*) FROM ATTACH A WHERE U.UPLOAD_BOARD_NO = A.UPLOAD_BOARD_NO) AS ATTACH_CNT
+			FROM UPLOAD_BOARD U 
+			<where>
+				<if test="column=='UPLOAD_TITLE' or  column='ID' " >${column} LIKE '%' || #{query} || '%'</if>
+			</where>
+			) A
+        WHERE ROW_NUM BETWEEN #{begin} AND #{end} 
+	</select>
+	
+	
 	<update id="updateHit" parameterType="int">
 		UPDATE UPLOAD_BOARD
 			SET HIT = HIT + 1
 		WHERE UPLOAD_BOARD_NO = #{uploadBoardNo}
 	</update>
+
 	
 	 <insert id="insertUpload" parameterType="UploadBoardDTO">
 		<selectKey keyProperty="uploadBoardNo" resultType="int" order="BEFORE">
@@ -68,13 +85,19 @@
 		WHERE ATTACH_NO = #{attachNo}
 	</update>
 	
-
 	
-	<update id="updatePoint" parameterType="String">
+	<update id="updateIncreasePoint" parameterType="String">
 		UPDATE USERS
 			SET POINT = POINT + 5
 		WHERE ID = #{id}
 	</update>
+	
+	<update id="updateDownloadPoint" parameterType="String">
+		UPDATE USERS
+			SET POINT = POINT - 3
+		WHERE ID = #{id}
+	</update>
+
 	
 	<select id="selectAttachByNo" parameterType="int" resultType="AttachDTO">
 		SELECT ATTACH_NO, PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, UPLOAD_BOARD_NO
@@ -107,6 +130,7 @@
 		FROM ATTACH
 		WHERE PATH = CONCAT('stoarge\\',TO_CHAR(SYSDATE -1, 'yyyy\\mm\\dd'))
 	</select>
+	
 	
 	
 </mapper>

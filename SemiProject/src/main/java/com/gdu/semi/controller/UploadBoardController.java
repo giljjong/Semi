@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.semi.service.UploadBoardService;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @Controller
 public class UploadBoardController {
 
@@ -33,6 +35,14 @@ public class UploadBoardController {
 		model.addAttribute("pageNo", pageNo);
 		return "upload/list";
 	}
+	
+	
+	@ResponseBody
+	@GetMapping(value = "/upload/ulist", produces="application/json; charset=UTF-8")
+	public  ResponseEntity<Object> search(HttpServletRequest request) { 
+		return uploadBoardService.getFindUploadList(request); 
+	}
+	 
 
 	@ResponseBody
 	@GetMapping(value = "/upload/ulist", produces="application/json; charset=UTF-8")
@@ -84,10 +94,13 @@ public class UploadBoardController {
 	@ResponseBody
 	@GetMapping("/upload/downloadAll")
 	public ResponseEntity<Resource> downloadAll(@RequestHeader("User-Agent") String userAgent, @RequestParam("uploadBoardNo") int uploadBoardNo){
-		
 		return uploadBoardService.downloadAll(userAgent, uploadBoardNo);
 	}
 	
+	@PostMapping("/upload/point")
+	public void downloadPoint(HttpServletRequest request) {
+		uploadBoardService.downloadPoint(request);
+	}
 	
 
 	@PostMapping("/upload/edit")
@@ -99,8 +112,7 @@ public class UploadBoardController {
 	@ResponseBody
 	@PostMapping("/upload/uedit")
 	public ResponseEntity<Object> uedit(@RequestParam("uploadBoardNo") int uploadBoardNo, Model model){
-		model.addAttribute("edit", uploadBoardService.getUploadByNo(uploadBoardNo).getBody() );
-		System.out.println(uploadBoardService.getUploadByNo(uploadBoardNo).getBody());
+//		model.addAttribute("edit", uploadBoardService.getUploadByNo(uploadBoardNo).getBody() );
 		return new ResponseEntity<Object>( uploadBoardService.getUploadByNo(uploadBoardNo).getBody(),HttpStatus.OK);
 	}
 	
@@ -111,11 +123,14 @@ public class UploadBoardController {
 		return uploadBoardService.modifyUpload(mulRequest, response);
 	}
 	
-	@GetMapping("/upload/attach/remove")
-	public String attachRemove(@RequestParam("uploadBoardNo") int uploadBoardNo, @RequestParam("attachNo") int attachNo) {
-		uploadBoardService.removeAttachByAttachNo(attachNo);
-		return "redirect:/upload/detail?uploadBoardNo=" + uploadBoardNo;
+	
+	
+	@ResponseBody
+	@PostMapping("/upload/attach/remove")
+	public ResponseEntity<Object> attachRemove(@RequestParam("attachNo") int attachNo){
+		return uploadBoardService.removeAttachByAttachNo(attachNo);
 	}
+	
 	
 	@PostMapping("/upload/remove")
 	public ResponseEntity<Object> remove(HttpServletRequest request, HttpServletResponse response) {

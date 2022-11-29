@@ -69,6 +69,17 @@
 		<div>
 			<a href= "${contextPath}/upload/write">작성</a>
 		</div>
+		<div>
+			<form id="frm_search" action="${contextPath}/upload/search">
+				제목  
+				<span id="titlesearch">
+					<input type="text" id="title" name="title">
+				</span>
+				<span>
+					<input type="submit" value="검색">
+				</span>
+			</form>
+		</div>
 		<hr>
 		
 		<div>

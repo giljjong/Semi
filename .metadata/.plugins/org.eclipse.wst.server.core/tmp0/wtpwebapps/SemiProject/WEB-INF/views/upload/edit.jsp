@@ -11,7 +11,8 @@
 <script>
 $(function(){
 	fn_fileCheck();
-	fn_removeAttach();
+	fn_btnEdit();
+	fn_editList();
 });
 
 function fn_fileCheck(){
@@ -37,8 +38,8 @@ function fn_fileCheck(){
 		}
 		
 	});
-	
-	$(document).ready(function(){
+}	
+	function fn_btnEdit(){
 		$('#btn_edit').click(function(){
 			const form = $('#frm_edit')[0];
 			console.log(form);
@@ -61,23 +62,49 @@ function fn_fileCheck(){
 				} 
 			})
 			
-		});
+		});  // 클릭
 		
+	}
+	
+	function fn_editList(){
 	    $.ajax({
 			type : 'POST',
 			url : '${contextPath}/upload/uedit?uploadBoardNo=' + ${edit.upload.uploadBoardNo} ,
 			dataType : 'json',
 			success : function(resData){
-				console.log(resData.upload.uploadBoardNo)
-				
+								
 				$.each(resData.attachList, function(i, attach){
 				     $('<ul>')
-					 .append( $('<li>').append( $('<a>').text(attach.origin).attr('href', '${contextPath}/upload/attach/remove?uploadBoardNo='+ resData.upload.uploadBoardNo + '&attachNo=' + attach.attachNo).attr('class','attachRemove'  )   ) )
+					 .append( $('<li>').append( $('<div>').text(attach.origin).attr('data-upload_board_no', resData.upload.uploadBoardNo ).attr('data-remove_no', attach.attachNo ).attr('class','attachRemove'  )   ) )
 					 .appendTo('#attachList'); 
+					
 				 })
+				 
 			}
 			
-		})  
+		}) //list
+	}
+	
+	$(document).on('click' , '.attachRemove' , function(e){
+		if(confirm('해당 첨부파일을 삭제할까요?')){
+			$.ajax({
+				type : 'POST',
+				url : '${contextPath}/upload/attach/remove' ,
+				data : 'attachNo=' + $(this).data('remove_no'),
+				success : function (resData){
+					alert('삭제가 성공했습니다.');
+					$('#attachList').empty();
+					fn_editList();
+				/* 	location.href='${contextPath}/upload/edit?uploadBoardNo=' + ${edit.upload.uploadBoardNo};  */
+					
+				}, 
+				error : function (jqXHR){
+					alert('삭제가 실패했습니다.');
+					history.back();
+				}
+			})
+		} 
+	 })  //삭제
 		
 		/* function fn_removeAttach(){
 				// 첨부 삭제
@@ -88,17 +115,11 @@ function fn_fileCheck(){
 				});
 			} */
 	
-	})
 	
-	function fn_removeAttach(){
-		$('.attachRemove').click(function(){
-			if(confirm('해당 첨부파일을 삭제할까요?')){
-				alert('삭제했습니다.');
-			}
-		})
-	}
 	
-}
+		
+	
+
 
 </script>
 </head>
@@ -127,12 +148,7 @@ function fn_fileCheck(){
 		
 		<div>
 			<h3>첨부삭제</h3>
-			<div id ='attachList'></div>
-			<%-- <c:forEach items="${attachList}" var="attach">
-				<div>
-					${attach.origin} <input type="button" value="삭제" class="btn_attach_remove" data-upload_no="${upload.uploadBoardNo}" data-attach_no="${attach.attachNo}">
-				</div>
-			</c:forEach> --%>
+			<form id ='attachList' method="post"></form>
 		</div>
 	</div>
 
