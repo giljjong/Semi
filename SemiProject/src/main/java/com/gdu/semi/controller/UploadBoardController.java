@@ -27,19 +27,20 @@ public class UploadBoardController {
 	private UploadBoardService uploadBoardService;
 
 	
-	@GetMapping("/") public String welcome() { return "index"; }
+//	@GetMapping("/") public String welcome() { return "index"; }
 	 
 	
 	@GetMapping("/upload/list")
 	public String list(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo, Model model) {
 		model.addAttribute("pageNo", pageNo);
 		return "upload/list";
+		
 	}
 	
 	
 	@ResponseBody
-	@GetMapping(value = "/upload/ulist", produces="application/json; charset=UTF-8")
-	public  ResponseEntity<Object> search(HttpServletRequest request) { 
+	@GetMapping(value = "/upload/search", produces="application/json; charset=UTF-8")
+	public  ResponseEntity<Object> search(HttpServletRequest request , @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo) { 
 		return uploadBoardService.getFindUploadList(request); 
 	}
 	 

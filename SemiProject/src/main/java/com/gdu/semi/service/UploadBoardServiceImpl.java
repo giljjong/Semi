@@ -3,6 +3,8 @@ package com.gdu.semi.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -75,37 +77,67 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		
 		String column = request.getParameter("column");
 		String query = request.getParameter("query");
+		System.out.println(pageNo);
+		System.out.println(column);
+		System.out.println(query);
+		
 		
 		Map<String, Object> count = new HashMap<>();
 		count.put("column", column);
-		count.put("query", query);
-		
+		count.put("query", query);	
 		int totalRecord = uploadBoardMapper.selectFindUploadCount(count);
+		
+		Map<String, Object> findList = new HashMap<>();
+		findList.put("column", column);
+		findList.put("query", query);
+		findList.put("begin", pageUtil.getBegin());
+		findList.put("end", pageUtil.getEnd());
+		
+		System.out.println("검색조건 : " +findList);
+		System.out.println("총레코드 개수  " + totalRecord);
+		System.out.println("페이지넘버  " + pageNo);
+		
 		pageUtil.setPageUtil(pageNo, totalRecord);
 		
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		count.put("column", column);
-		count.put("query", query);
+		System.out.println("토탈페이지" +pageUtil.getTotalPage());
+		System.out.println("파인드리스트" + uploadBoardMapper.selectFindUploadList(findList));
+		System.out.println("beginPage" + pageUtil.getBeginPage());
+		System.out.println("endPage" + pageUtil.getEndPage());
+		
+		int abc = (int)Math.ceil((double)totalRecord/5);
+		System.out.println("Abc : " + abc);
+		
+		
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("uploadList", uploadBoardMapper.selectFindUploadList(map));
+		result.put("uploadList", uploadBoardMapper.selectFindUploadList(findList));
 		result.put("beginNo", totalRecord - (pageNo - 1) * pageUtil.getRecordPerPage());
 		result.put("beginPage", pageUtil.getBeginPage());
 		result.put("endPage", pageUtil.getEndPage());
 		result.put("totalPage", pageUtil.getTotalPage());
 		result.put("page", pageUtil.getPage());
+		result.put("column", column);
+		result.put("query", query);
 		
-		String path = null;
-		switch(column) {
-		case "UPLOAD_TITLE":
-		case "ID":
-			path = request.getContextPath() + "/upload/search?column=" + column + "&query=" + query;
-			break;
+//		String path = null;
+//		switch(column) {
+//		case "UPLOAD_TITLE":
+//		case "ID":
+//			path = request.getContextPath() + "/upload/search?column=" + column + "&query=" + query;
+//			break;
+//		}
+		
+		
+		try {
+			URI redirectUri = new URI("http://localhost:9091/semi/upload/list");
+			HttpHeaders httpHeaders = new HttpHeaders();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		return new ResponseEntity<Object>(map,HttpStatus.OK);
+	    
+		return new ResponseEntity<Object>(result,HttpStatus.OK);
 	}
 	
 	
@@ -116,7 +148,7 @@ public class UploadBoardServiceImpl implements UploadBoardService {
 		String title = multipartreRequest.getParameter("title");
 		String content = multipartreRequest.getParameter("content");
 		String ip = multipartreRequest.getRemoteAddr();
-		String id = "admin" ;
+		String id = multipartreRequest.getParameter("id") ;
 		
 	
 		

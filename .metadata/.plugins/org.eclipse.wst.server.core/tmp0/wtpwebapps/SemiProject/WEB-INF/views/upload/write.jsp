@@ -77,7 +77,10 @@
 		<h1>작성화면</h1>
 		
 		<form id="frm_write"  >
-		
+			<div>
+				<label for="id">아이디</label>
+				<input type="text" id="id" name="id" required="required" value="${loginUser.id}" readonly="readonly">
+			</div>
 			<div>
 				<label for="title">제목</label>
 				<input type="text" id="title" name="title" required="required">

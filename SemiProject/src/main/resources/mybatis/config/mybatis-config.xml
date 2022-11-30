@@ -11,8 +11,18 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.gdu.semi.domain.RetireUserDTO" alias="RetireUserDTO" />
+		<typeAlias type="com.gdu.semi.domain.SleepUserDTO" alias="SleepUserDTO" />
+		<typeAlias type="com.gdu.semi.domain.UserDTO" alias="UserDTO" />
+		<typeAlias type="com.gdu.semi.domain.GalleryBoardDTO" alias="GalleryBoardDTO" />
+		<typeAlias type="com.gdu.semi.domain.SummernoteImageDTO" alias="SummernoteImageDTO" />
+		<typeAlias type="com.gdu.semi.domain.CommentDTO" alias="CommentDTO" />
 		<typeAlias type="com.gdu.semi.domain.AttachDTO" alias="AttachDTO" />
 		<typeAlias type="com.gdu.semi.domain.UploadBoardDTO" alias="UploadBoardDTO" />
-		<typeAlias type="com.gdu.semi.domain.UserDTO" alias="UserDTO" />
+		<typeAlias type="com.gdu.semi.domain.FreeBoardDTO" alias="FreeBoardDTO" />
+		<typeAlias type="com.gdu.semi.domain.AllUserDTO" alias="AllUserDTO" />
+		<typeAlias type="com.gdu.semi.domain.BoardDTO" alias="BoardDTO" />
+		<typeAlias type="com.gdu.semi.domain.AccessLogDTO" alias="AccessLogDTO" />
 	</typeAliases>
+
 </configuration>

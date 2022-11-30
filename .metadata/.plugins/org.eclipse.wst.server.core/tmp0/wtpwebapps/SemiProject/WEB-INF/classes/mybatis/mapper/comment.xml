@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.semi.mapper.CommentMapper">
+
+	<!-- 댓글 개수 -->
+	<select id="selectCommentCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM COMMENTS
+	 	 WHERE GALLERY_BOARD_NO=#{galleryBoardNo}  
+	</select>
+	
+	<!--  댓글 삽입 -->
+	<insert id="insertComment" parameterType="CommentDTO">
+		INSERT INTO COMMENTS
+			(COMMENTS_NO, ID, GALLERY_BOARD_NO, CREATE_DATE, COMM_CONTENT, IP, STATE, DEPTH, GROUP_NO)
+		VALUES
+			(COMMENTS_SEQ.NEXTVAL, 'admin', #{galleryBoardNo}, SYSDATE, #{commContent}, '아이피', 1, 0, COMMENTS_SEQ.CURRVAL)
+	</insert>
+
+	<!-- 댓글 리스트 -->
+	<select id="selectCommentList" parameterType="Map" resultType="CommentDTO">
+		SELECT A.ROW_NUM, A.COMMENTS_NO, A.ID, A.GALLERY_BOARD_NO, A.CREATE_DATE, A.COMM_CONTENT, A.IP, A.STATE, A.DEPTH, A.GROUP_NO
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC,DEPTH ASC, CREATE_DATE DESC)AS ROW_NUM, COMMENTS_NO, ID, GALLERY_BOARD_NO, CREATE_DATE, COMM_CONTENT, IP, STATE, DEPTH, GROUP_NO
+		  		  FROM COMMENTS
+		  		 WHERE GALLERY_BOARD_NO=#{galleryBoardNo}) A
+		  WHERE	 A.ROW_NUM BETWEEN #{begin} AND #{end}	 
+	</select>
+
+	
+	<insert id="insertReply" parameterType="CommentDTO">
+		INSERT INTO COMMENTS
+			(COMMENTS_NO, ID, GALLERY_BOARD_NO, CREATE_DATE, COMM_CONTENT, IP, STATE, DEPTH, GROUP_NO)
+		VALUES
+			(COMMENTS_SEQ.NEXTVAL, #{id}, #{galleryBoardNo}, SYSDATE, #{commContent}, #{ip}, 1, 1, #{groupNo})
+	</insert>
+	
+	<!--  SET STATE = -1 : 뷰에서 안나오게 하려고 상태값을 -1로 바꿔줌 -->
+	<update id="deleteComment" parameterType="int">
+		UPDATE COMMENTS
+		   SET STATE = -1
+		 WHERE COMMENTS_NO = ${commentsNo}  
+	</update>
+	
+</mapper>

@@ -10,17 +10,26 @@
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 </head>
 <body>
-	<h1>로그인</h1>
-	<div>
-		<form action="${contextPath}">
-			<input type="text" id="id" name="id"><br>
-			<input type="text" id="pw" name="pw">
-		</form>
-	</div>
+
+	<!-- 로그인 안된 상태 -->
+	<c:if test="${loginUser == null}">
+		<a href="${contextPath}/user/login/form">로그인페이지</a><br>
+		<a href="free/list">자유게시판 가기</a><br>
+		<a href="gallery/list">갤러리게시판 가기</a><br>
+		<a href="upload/list">업로드게시판 가기</a><br>
+		<a href="admin/menu">관리자 페이지 가기</a><br>
+	</c:if>
 	
-	<a href="free/list">자유게시판 가기</a>
-	<a href="gallery/list">갤러리게시판 가기</a>
-	<a href="upload/list?pageNo=1">업로드게시판 가기</a>
-	<a href="admin/list">관리자 페이지 가기</a>
+	<!-- 로그인 상태 -->
+	<c:if test="${loginUser != null}">
+		<div>
+			<a href="${contextPath}/user/check/form">${loginUser.name}</a>님 마이페이지
+		</div>
+		<a href="${contextPath}/user/logout">로그아웃</a><br>
+		<a href="free/list">자유게시판 가기</a><br>
+		<a href="gallery/list">갤러리게시판 가기</a><br>
+		<a href="upload/list">업로드게시판 가기</a><br>
+		<a href="admin/menu">관리자 페이지 가기</a><br>
+	</c:if>
 </body>
 </html>
