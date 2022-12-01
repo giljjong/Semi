@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="page"/>
+		<item key="selection" value="queryForm"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="queryForm"/>
+			<item value="frm"/>
+			<item value="tbl"/>
+			<item value="tb;"/>
+			<item value=".center"/>
+			<item value="center"/>
+			<item value=".delete_icon"/>
+			<item value="delete"/>
+			<item value="font"/>
+			<item value="head"/>
+			<item value="title"/>
 			<item value="page"/>
 			<item value="SYSTEM"/>
 			<item value="OY"/>
 			<item value="jackson"/>
-			<item value="plugins"/>
-			<item value="org"/>
-			<item value="logback"/>
-			<item value="log"/>
-			<item value="lombok"/>
-			<item value="mybatis"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

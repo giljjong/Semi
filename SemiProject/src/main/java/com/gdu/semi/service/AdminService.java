@@ -16,5 +16,6 @@ public interface AdminService {
 	public Map<String, Object> findAllBoards(HttpServletRequest request);
 	public Map<String, Object> findBoards(HttpServletRequest request);
 	public Map<String, Object> deleteBoard(List<String> id, List<String> boardNo, List<String> board);
-	public Map<String, Object> findAllBoardsById(HttpServletRequest request);
+	public Map<String, Object> findAllBoardsFromId(HttpServletRequest request);
+	public Map<String, Object> findBoardsFromId(HttpServletRequest request);
 }

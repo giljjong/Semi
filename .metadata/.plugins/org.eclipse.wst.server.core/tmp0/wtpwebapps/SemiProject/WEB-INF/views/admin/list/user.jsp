@@ -15,12 +15,7 @@
 <script src="${contextPath}/resources/js/jquery-3.6.1.min.js"></script>
 <script src="${contextPath}/resources/js/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<style>
-	.retire_icon:hover, .dormant_icon:hover, .restore_icon:hover, .user_info:hover {
-		cursor: pointer;
-	}
-</style>
+<link rel="stylesheet" href="${contextPath}/resources/css/admin.css">
 
 <script>
 
@@ -58,8 +53,8 @@
 			success : function(resData) {
 				
 				$('<span>').html('총 인원 수 : ' + resData.totalRecord)
-				.append($('<span>').html('정상 회원 : ' + resData.userCnt))
-				.append($('<span>').html('휴면 회원 : ' + resData.sleepUserCnt))
+				.append($('<span>').html('&nbsp;&nbsp;정상 회원 : ' + resData.userCnt))
+				.append($('<span>').html('&nbsp;&nbsp;휴면 회원 : ' + resData.sleepUserCnt))
 				.appendTo('#span_cnt');
 				
 				$('.pageWrap').html(resData.paging);
@@ -69,18 +64,19 @@
 					$.each(resData.users, function(i, user){
 
 						$('<tr>')
-						.append($('<td>').html(user.rn))
-						.append($('<td>').html($('<span class="user_info">').text(user.userDTO.id)))
-						.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('정상회원') : $('<td>').html('휴면회원'))
-						.append($('<td>').html(user.userDTO.point))
-						.append(user.userDTO.snsType == null ? $('<td>').html('자체 회원') : $('<td>').html('Naver 가입'))
-						.append($('<td>').html(user.userDTO.joinDate))
-						.append($('<td>').html(user.userDTO.accessLogDTO.lastLoginDate))
-						.append(user.userDTO.infoModifyDate == null ? $('<td>').html('') : $('<td>').html(user.userDTO.infoModifyDate))
-						.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('') : $('<td class="sleepUser">').html(user.sleepUserDTO.sleepDate))
-						.append($('<td>').html('<a class="dormant_icon"><i class="fa-solid fa-user-check"></i></a>'))
-						.append($('<td>').html('<a class="restore_icon"><i class="fa-solid fa-user-lock"></i></a>'))
-						.append($('<td>').html('<a class="retire_icon"><i class="fa-solid fa-trash-can"></i></a>'))
+						.append($('<td class="center">').html(user.rn))
+						.append($('<td class="center id">').html($('<span class="user_info">').text(user.userDTO.id)))
+						.append($('<td class="blind">').text('detail'))
+						.append(user.sleepUserDTO.sleepDate == null ? $('<td class="center">').html('정상회원') : $('<td class="center">').html('휴면회원'))
+						.append($('<td class="center">').html(user.userDTO.point))
+						.append(user.userDTO.snsType == null ? $('<td class="center">').html('자체 회원') : $('<td class="center">').html('Naver 가입'))
+						.append($('<td class="center">').html(user.userDTO.joinDate))
+						.append($('<td class="center">').html(user.userDTO.accessLogDTO.lastLoginDate))
+						.append(user.userDTO.infoModifyDate == null ? $('<td class="center">').html('') : $('<td class="center">').html(user.userDTO.infoModifyDate))
+						.append(user.sleepUserDTO.sleepDate == null ? $('<td class="center">').html('') : $('<td class="sleepUser center">').html(user.sleepUserDTO.sleepDate))
+						.append($('<td class="center">').html('<a class="dormant_icon"><i class="fa-solid fa-user-check"></i></a>'))
+						.append($('<td class="center">').html('<a class="restore_icon"><i class="fa-solid fa-user-lock"></i></a>'))
+						.append($('<td class="center">').html('<a class="retire_icon"><i class="fa-solid fa-trash-can"></i></a>'))
 						.appendTo($('#userList'));
 						
 					});
@@ -129,7 +125,7 @@
 				success : function(resData) {
 					var sleepCnt = '';
 					if($('#state').val() == '') {
-						sleepCnt = '휴면 회원 : ' + resData.sleepUserCnt;
+						sleepCnt = '&nbsp;&nbsp;휴면 회원 : ' + resData.sleepUserCnt;
 					}
 					$('<span>').html('총 인원 수 : ' + resData.totalRecord)
 					.append($('<span>').html(sleepCnt))
@@ -143,25 +139,27 @@
 
 							tr
 							.append($('<input type="hidden">').val())
-							.append($('<td>').html(user.rn))
-							.append($('<td>').html($('<span class="info_user">').text(user.userDTO.id)))
-							.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('정상회원') : $('<td>').html('휴면회원'))
-							.append($('<td>').html(user.userDTO.point))
-							.append(user.userDTO.snsType == null ? $('<td>').html('자체 회원') : $('<td>').html('Naver 가입'))
-							.append($('<td>').html(user.userDTO.joinDate))
-							.append($('<td>').html(user.userDTO.accessLogDTO.lastLoginDate));
+							.append($('<td class="center">').html(user.rn))
+							.append($('<td class="center id">').html($('<span class="info_user">').text(user.userDTO.id)))
+							.append($('<td class="blind">').text('detail'))
+							.append($('<td class="blind">').text(user.sleepUserDTO.sleepDate == null ? '정상회원' : '휴면회원'))
+							.append(user.sleepUserDTO.sleepDate == null ? $('<td class="center">').html('정상회원') : $('<td class="center">').html('휴면회원'))
+							.append($('<td class="center">').html(user.userDTO.point))
+							.append(user.userDTO.snsType == null ? $('<td class="center">').html('자체 회원') : $('<td class="center">').html('Naver 가입'))
+							.append($('<td class="center">').html(user.userDTO.joinDate))
+							.append($('<td class="center">').html(user.userDTO.accessLogDTO.lastLoginDate));
 							if($('#state').val() == ''){
 								tr
-								.append(user.userDTO.infoModifyDate == null ?  $('<td>').html('') : $('<td>').html(user.userDTO.infoModifyDate))
-								.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html('') : $('<td class="sleepUser">').html(user.sleepUserDTO.sleepDate))
+								.append(user.userDTO.infoModifyDate == null ?  $('<td class="center">').html('') : $('<td class="center">').html(user.userDTO.infoModifyDate))
+								.append(user.sleepUserDTO.sleepDate == null ? $('<td class="center">').html('') : $('<td class="sleepUser center">').html(user.sleepUserDTO.sleepDate))
 							}else{
 								tr
-								.append(user.sleepUserDTO.sleepDate == null ? $('<td>').html(user.userDTO.infoModifyDate) : $('<td class="sleepUser">').html(user.sleepUserDTO.sleepDate))
+								.append(user.sleepUserDTO.sleepDate == null ? $('<td class="center">').html(user.userDTO.infoModifyDate) : $('<td class="sleepUser center">').html(user.sleepUserDTO.sleepDate))
 							}
 							tr
-							.append($('<td>').html('<a class="dormant_icon"><i class="fa-solid fa-user-check"></i></a>'))
-							.append($('<td>').html('<a class="restore_icon"><i class="fa-solid fa-user-lock"></i></a>'))
-							.append($('<td>').html('<a class="retire_icon"><i class="fa-solid fa-trash-can"></i></a>'))
+							.append($('<td class="center">').html('<a class="dormant_icon"><i class="fa-solid fa-user-check"></i></a>'))
+							.append($('<td class="center">').html('<a class="restore_icon"><i class="fa-solid fa-user-lock"></i></a>'))
+							.append($('<td class="center">').html('<a class="retire_icon"><i class="fa-solid fa-trash-can"></i></a>'))
 							tr.appendTo($('#userList'));
 							
 						});
@@ -259,7 +257,9 @@
 	function fn_infoUser(){
 		$(document).on('click', '.user_info', function(event){
 			var id = $(this).text();
-			location.href="${contextPath}/admin/user/detail?id=" + id;
+			var detail = $(this).parent().next().text();
+			var state = $(this).parent().next().next().text();
+			location.href="${contextPath}/admin/user/detail?id=" + id + "&type=" + detail + "&state=" + state;
 		})
 	};
 	
@@ -290,51 +290,60 @@
 	};
 </script>
 </head>
-<body>
-	<div>
-		<a href="${contextPath}/admin/menu">메뉴</a>
-		<a href="${contextPath}/admin/list/board">게시판 관리</a>
-		<a href="${contextPath}/admin/list/upload">업로드게시판 관리</a>
-	</div>
-	<div>
-		<form id="frm_search">
-			<select id="state" name="state">
-				<option value="">전체</option>
-				<option value="active">정상회원</option>
-				<option value="sleep">휴면회원</option>
-			</select>
-			<select id="column" name="column">
-				<option value="">:::선택:::</option>
-				<option value="ID">아이디</option>
-				<option value="JOIN_DATE">가입일</option>
-				<option id="sleepOpt" value="SLEEP_DATE">휴면일자</option>
-				<option value="POINT">포인트</option>
-			</select>
-			<input type="hidden" name="page" value="<%=p%>">
-			<span id="area1">
-				<input type="text" id="query" name="query" class="input">
-			</span>
-			<span id="area2">
-				<input type="text" id="first" name="first" class="input">
-				~
-				<input type="text" id="last" name="last" class="input">
-			</span>
-			<span id="area3">
-				<input type="text" id="start" name="start" class="start_datepicker input">
-				~
-				<input type="text" id="stop" name="stop" class="end_datepicker input">
-			</span>
-			<span>
-				<input type="button" value="검색" id="btn_search">
-				<input type="button" value="전체회원조회" id="btn_all">
-			</span>
-		</form>
-	</div>
-	<div>
-		<div id="span_cnt">
+<header>
+	<div class="head_bar">
+		<div id="logo_div">
+			<a href="../index.jsp"><img id="logo" src="https://www.gdu.co.kr/images/main/logo.png"></a>
 		</div>
-		<table border="1">
-			<thead>
+		<ul class="gnb_barAll">
+			<li><a href="${contextPath}/admin/menu"  class="gnb_bar">전체메뉴</a></li>
+			<li><span class="snb_bar"></span><a href="${contextPath}/admin/list/board" class="gnb_bar">게시판 관리</a></li>
+			<li><span class="snb_bar"></span><a href="${contextPath}/admin/list/user" class="gnb_bar">회원관리</a></li>
+			<li><span class="snb_bar"></span><a href="#"  class="gnb_bar">게시판 가기</a></li>
+		</ul>
+	</div>
+</header>
+<body>
+	<div class="allForm">
+		<div class="queryForm">
+			<div class="cnt_div">
+				<span id="span_cnt"></span>
+			</div>
+			<form id="frm_search">
+				<select id="state" name="state" class="select">
+					<option value="">전체</option>
+					<option value="active">정상회원</option>
+					<option value="sleep">휴면회원</option>
+				</select>
+				<select id="column" name="column" class="select">
+					<option value="">:::선택:::</option>
+					<option value="ID">아이디</option>
+					<option value="JOIN_DATE">가입일</option>
+					<option id="sleepOpt" value="SLEEP_DATE">휴면일자</option>
+					<option value="POINT">포인트</option>
+				</select>
+				<input type="hidden" name="page" value="<%=p%>">
+				<span id="area1">
+					<input type="text" id="query" name="query" class="input searchBox">
+				</span>
+				<span id="area2">
+					<input type="text" id="first" name="first" class="input searchBox">
+					~
+					<input type="text" id="last" name="last" class="input searchBox">
+				</span>
+				<span id="area3">
+					<input type="text" id="start" name="start" class="start_datepicker input searchBox">
+					~
+					<input type="text" id="stop" name="stop" class="end_datepicker input searchBox">
+				</span>
+				<span>
+					<input type="button" value="검색" id="btn_search" class="btn_primary">
+					<input type="button" value="전체회원조회" id="btn_all" class="btn_primary">
+				</span>
+			</form>
+		</div>
+		<table class="tbl_user">
+			<thead class="head_font thead_user">
 				<tr>
 					<td>순번</td>
 					<td>아이디</td>

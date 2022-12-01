@@ -228,6 +228,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Override
 	public Map<String, Object> findAllBoards(HttpServletRequest request) {
+		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		
@@ -238,6 +239,7 @@ public class AdminServiceImpl implements AdminService {
 
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
+		
 		List<BoardDTO> boards = adminMapper.selectAllBoardByQuery(map);
 		
 		Map<String, Object> result = new HashMap<>();
@@ -250,7 +252,7 @@ public class AdminServiceImpl implements AdminService {
 			result.put("boards", boards);
 			result.put("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
 			result.put("totalRecord", totalRecord);
-			result.put("paging", pageUtil.getPaging(request.getContextPath() + "/admin/list/board"));
+			result.put("paging", pageUtil);
 			result.put("status", 200);
 		}
 		return result;
@@ -312,7 +314,8 @@ public class AdminServiceImpl implements AdminService {
 		switch(column) {
 		case "ID":
 		case "TITLE":
-		case "ID_TITLE":
+		case "CONTENT":
+		case "TITLE_CONTENT":
 			path = request.getContextPath() + "/admin/list/searchBoards?column=" + column + "&query=" + query + "&board=" + board;
 			break;
 		case "CREATE_DATE":
@@ -375,20 +378,25 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	@Override
-	public Map<String, Object> findAllBoardsById(HttpServletRequest request) {
+	public Map<String, Object> findAllBoardsFromId(HttpServletRequest request) {
+		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		
 		String id = request.getParameter("id");
+		String type = request.getParameter("type");
 		
 		Map<String, Object> map = new HashMap<>();
-		int totalRecord = adminMapper.selectAllBoardCountById(id);
+		map.put("id", id);
+		map.put("type", type);
+		
+		int totalRecord = adminMapper.selectAllBoardCountByQuery(map);
 		
 		pageUtil.setPageUtil(page, totalRecord);
-
+		
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
-		List<BoardDTO> boards = adminMapper.selectAllBoardById(map);
+		List<BoardDTO> boards = adminMapper.selectAllBoardByQuery(map);
 		
 		Map<String, Object> result = new HashMap<>();
 		if(boards.size() == 0) {
@@ -406,4 +414,89 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 	
+	@Override
+	public Map<String, Object> findBoardsFromId(HttpServletRequest request) {
+		
+		String board = request.getParameter("board");
+		String column = request.getParameter("column");
+		String query = request.getParameter("query");
+		String start = request.getParameter("start");
+		String stop = request.getParameter("stop");
+		String id = request.getParameter("id");
+		String type = request.getParameter("type");
+		
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("column", column);
+		map.put("query", query);
+		map.put("start", start);
+		map.put("stop", stop);
+		map.put("board", board);
+		map.put("id", id);
+		map.put("type", type);
+
+		int totalRecord = 0;
+		List<BoardDTO> boards = null;
+		
+		if(board.equals("FREE_BOARD")) {
+			totalRecord = adminMapper.selectFreeCountByQuery(map);
+			pageUtil.setPageUtil(page, totalRecord);
+			
+			map.put("begin", pageUtil.getBegin());
+			map.put("end", pageUtil.getEnd());
+			boards = adminMapper.selectFreeBoardByQuery(map);
+			
+		} else if(board.equals("GALLERY_BOARD") || board.equals("UPLOAD_BOARD")){
+			
+			totalRecord = adminMapper.selectGalleryUploadCountByQuery(map);
+			pageUtil.setPageUtil(page, totalRecord);
+			
+			map.put("begin", pageUtil.getBegin());
+			map.put("end", pageUtil.getEnd());
+			if(board.equals("GALLERY_BOARD")) {
+				boards = adminMapper.selectGalleryBoardByQuery(map);
+			} else {
+				boards = adminMapper.selectUploadBoardByQuery(map);
+			}
+		} else {
+			totalRecord = adminMapper.selectAllBoardCountByQuery(map);
+			pageUtil.setPageUtil(page, totalRecord);
+			
+			map.put("begin", pageUtil.getBegin());
+			map.put("end", pageUtil.getEnd());
+			boards = adminMapper.selectAllBoardByQuery(map);
+		}
+		
+		String path = null;
+		
+		switch(column) {
+		case "TITLE":
+		case "CONTENT":
+		case "TITLE_CONTENT":
+			path = request.getContextPath() + "/admin/list/searchBoards?column=" + column + "&query=" + query + "&board=" + board;
+			break;
+		case "CREATE_DATE":
+			path = request.getContextPath() + "/admin/list/searchBoards?column=" + column + "&start=" + start + "&stop=" + stop + "&board=" + board;
+			break;
+		default : path = request.getContextPath() + "/admin/list/searchBoards?column=" + column + "&board=" + board;
+		}
+		
+		Map<String, Object> result = new HashMap<>();
+		if(boards.size() == 0) {
+			result.put("message", "조회된 결과가 없습니다.");
+			result.put("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
+			result.put("totalRecord", totalRecord);
+			result.put("status", 500);
+		} else {
+			result.put("boards", boards);
+			result.put("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
+			result.put("totalRecord", totalRecord);
+			result.put("paging", pageUtil.getPaging(path));
+			result.put("status", 200);
+		}
+		
+		return result;
+	}
 }

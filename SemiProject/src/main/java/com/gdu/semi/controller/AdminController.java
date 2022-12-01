@@ -34,6 +34,8 @@ public class AdminController {
 	@GetMapping("/admin/user/detail")
 	public String UserDetail(HttpServletRequest request, Model model) {
 		model.addAttribute("id", request.getParameter("id"));
+		model.addAttribute("type", request.getParameter("type"));
+		model.addAttribute("state", request.getParameter("state"));
 		return "admin/list/detail";
 	}
 	
@@ -92,8 +94,14 @@ public class AdminController {
 	
 	@ResponseBody
 	@GetMapping(value="/admin/list/allBoards/id", produces="application/json; charset=UTF-8")
+	public Map<String, Object> BoardListById(HttpServletRequest request) {
+		return adminService.findAllBoardsFromId(request);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/admin/search/boards/id", produces="application/json; charset=UTF-8")
 	public Map<String, Object> searchBoardListById(HttpServletRequest request) {
-		return adminService.findAllBoardsById(request);
+		return adminService.findBoardsFromId(request);
 	}
 	
 }

@@ -5,7 +5,6 @@ INDEX VERSION 1.131+C:\Semi\.metadata\.plugins\org.eclipse.jdt.core
 2240099346.index
 1620713276.index
 4016985651.index
-3258783081.index
 1627275581.index
 2672634208.index
 2156818775.index

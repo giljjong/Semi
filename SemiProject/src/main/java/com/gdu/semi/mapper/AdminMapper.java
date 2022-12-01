@@ -25,9 +25,7 @@ public interface AdminMapper {
 	public int insertdormantUser(String id);
 	public int insertAccessUser(String id);
 	public List<BoardDTO> selectAllBoardByQuery(Map<String, Object> map);
-	public List<BoardDTO> selectAllBoardById(Map<String, Object> map);
 	public int selectAllBoardCountByQuery(Map<String, Object> map);
-	public int selectAllBoardCountById(String id);
 	public int selectGalleryUploadCountByQuery(Map<String, Object> map);
 	public int selectFreeCountByQuery(Map<String, Object> map);
 	public List<BoardDTO> selectFreeBoardByQuery(Map<String, Object> map);

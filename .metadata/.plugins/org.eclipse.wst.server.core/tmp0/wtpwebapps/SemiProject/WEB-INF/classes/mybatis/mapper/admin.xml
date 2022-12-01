@@ -61,6 +61,7 @@
 		<collection resultMap="AccessLogMap" property="accessLogDTO"></collection>
 	</resultMap>
 	<resultMap type="AllUserDTO" id="AllUserMap">
+		<result column="RN" property="rn" />
 		<collection resultMap="UserMap" property="userDTO"></collection>
 		<collection resultMap="SleepUserMap" property="sleepUserDTO"></collection>
 	</resultMap>
@@ -239,8 +240,9 @@
                 		SELECT 0 FREE_BOARD_NO, 0 GALLERY_BOARD_NO, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
                   		  FROM UPLOAD_BOARD) A
 		         <where>
-			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
-			 		<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+		         	<if test="type=='detail'">AND ID = #{id}</if>
+			 		<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+			 		<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 				  	<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
 		         </where>
 		         ) B
@@ -262,8 +264,9 @@
         		SELECT ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
           		  FROM UPLOAD_BOARD) A
 		<where>
-	 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
- 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			<if test="type=='detail'">AND ID = #{id}</if>
+			<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+			<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
         </where>
 	</select>
@@ -273,8 +276,9 @@
 		SELECT COUNT(*)
   		  FROM ${board}
 		<where>
-	 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
- 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			<if test="type=='detail'">AND ID = #{id}</if>
+			<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+			<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
         </where>
 	</select>
@@ -283,8 +287,9 @@
 		SELECT COUNT(*)
   		  FROM FREE_BOARD
 		<where>
-	 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
- 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			<if test="type=='detail'">AND ID = #{id}</if>
+			<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+			<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
         </where>
 	</select>
@@ -294,8 +299,9 @@
 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC) AS RN, ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER
           		  FROM FREE_BOARD
 	          	<where>
-			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
-		 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+					<if test="type=='detail'">AND ID = #{id}</if>
+					<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+					<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
 	        	</where>
           		  ) A
@@ -307,8 +313,9 @@
 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GALLERY_BOARD_NO DESC) AS RN, ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT
           		  FROM GALLERY_BOARD
 		         <where>
-			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
-		 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+					<if test="type=='detail'">AND ID = #{id}</if>
+					<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+					<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
 		        </where>
           		  ) A
@@ -320,8 +327,9 @@
 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_BOARD_NO DESC) AS RN, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT
           		  FROM UPLOAD_BOARD
 		         <where>
-			 		<if test="column=='ID' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
-		 			<if test="column=='ID_TITLE'">AND ID LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+					<if test="type=='detail'">AND ID = #{id}</if>
+					<if test="column=='ID' or column=='TITLE' or column=='CONTENT'">AND ${column} LIKE '%' || #{query} || '%'</if>
+					<if test="column=='TITLE_CONTENT'">AND TITLE LIKE '%' || #{query} || '%' AND CONTENT LIKE '%' || #{query} || '%'</if>
 			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
 		        </where>
           		  ) A
@@ -358,41 +366,68 @@
 	
 	<!-- 유저 Detail 게시물 검색 -->
 	
-	<select id="selectAllBoardById" parameterType="Map" resultMap="BoardMap">
-		SELECT B.RN, B.FREE_BOARD_NO, B.GALLERY_BOARD_NO, B.UPLOAD_BOARD_NO, B.ID, B.TITLE, B.CONTENT, B.IP, B.CREATE_DATE, B.MODIFY_DATE, B.STATE, B.DEPTH, B.GROUP_NO, B.GROUP_ORDER, B.HIT
-  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC, CREATE_DATE DESC) AS RN, A.FREE_BOARD_NO, A.GALLERY_BOARD_NO, A.UPLOAD_BOARD_NO, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER, A.HIT
-          		  FROM((SELECT FREE_BOARD_NO, 0 GALLERY_BOARD_NO, 0 UPLOAD_BOARD_NO, ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER, NULL HIT
-                  		  FROM FREE_BOARD
-      
-                		UNION
-    
-                		SELECT 0 FREE_BOARD_NO, GALLERY_BOARD_NO, 0 UPLOAD_BOARD_NO, ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
-                  		  FROM GALLERY_BOARD)
-      
-                		UNION
-    
-                		SELECT 0 FREE_BOARD_NO, 0 GALLERY_BOARD_NO, UPLOAD_BOARD_NO, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
-                  		  FROM UPLOAD_BOARD) A
-		        WHERE ID = #{id}
-		         ) B
-	 	WHERE B.RN BETWEEN #{begin} AND #{end}
+	<select id="selectGalleryUploadCountById" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+  		  FROM ${board}
+		<where>
+			AND ID = #{id}
+	 		<if test="column=='CONTENT' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+ 			<if test="column=='TITLE_CONTENT'">AND CONTENT LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+        </where>
 	</select>
 	
-	<select id="selectAllBoardCountById" parameterType="String" resultType="int">
+	<select id="selectFreeCountById" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
-  		  FROM((SELECT ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER, NULL HIT
+  		  FROM FREE_BOARD
+		<where>
+			AND ID = #{id}
+	 		<if test="column=='CONTENT' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+ 			<if test="column=='TITLE_CONTENT'">AND CONTENT LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+	  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+        </where>
+	</select>
+	
+	<select id="selectFreeBoardById" parameterType="Map" resultType="BoardDTO">
+		SELECT A.RN, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC) AS RN, ID, FREE_TITLE AS TITLE, FREE_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, STATE, DEPTH, GROUP_NO, GROUP_ORDER
           		  FROM FREE_BOARD
-      
-        		UNION
-    
-        		SELECT ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
-          		  FROM GALLERY_BOARD)
-      
-        		UNION
-    
-        		SELECT ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, NULL STATE, NULL DEPTH, NULL GROUP_NO, NULL GROUP_ORDER, HIT
-          		  FROM UPLOAD_BOARD) A
-		 WHERE ID = #{id}
+	          	<where>
+	          		AND ID = #{id}
+			 		<if test="column=='CONTENT' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		 			<if test="column=='TITLE_CONTENT'">AND CONTENT LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+	        	</where>
+          		  ) A
+       	 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectGalleryBoardById" parameterType="Map" resultType="BoardDTO">
+		SELECT A.RN, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.HIT
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GALLERY_BOARD_NO DESC) AS RN, ID, GALLERY_TITLE AS TITLE, GALLERY_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT
+          		  FROM GALLERY_BOARD
+		         <where>
+		         	AND ID = #{id}
+			 		<if test="column=='CONTENT' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		 			<if test="column=='TITLE_CONTENT'">AND CONTENT LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		        </where>
+          		  ) A
+         WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectUploadBoardById" parameterType="Map" resultType="BoardDTO">
+		SELECT A.RN, A.ID, A.TITLE, A.CONTENT, A.IP, A.CREATE_DATE, A.MODIFY_DATE, A.HIT
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_BOARD_NO DESC) AS RN, ID, UPLOAD_TITLE AS TITLE, UPLOAD_CONTENT AS CONTENT, IP, CREATE_DATE, MODIFY_DATE, HIT
+          		  FROM UPLOAD_BOARD
+		         <where>
+		         	AND ID = #{id}
+			 		<if test="column=='CONTENT' or column=='TITLE'">AND ${column} LIKE '%' || #{query} || '%'</if>
+		 			<if test="column=='TITLE_CONTENT'">AND CONTENT LIKE '%' || #{query} || '%' AND TITLE LIKE '%' || #{query} || '%'</if>
+			  		<if test="column=='CREATE_DATE'">AND ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')</if>
+		        </where>
+          		  ) A
+        WHERE A.RN BETWEEN #{begin} AND #{end}
 	</select>
 	
 </mapper>
